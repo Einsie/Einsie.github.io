@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Einsie.github.io/portfolio/public/static/css/main.2b62362b.css",
+    "main.js": "/Einsie.github.io/portfolio/public/static/js/main.dda8bd02.js",
+    "index.html": "/Einsie.github.io/portfolio/public/index.html",
+    "main.2b62362b.css.map": "/Einsie.github.io/portfolio/public/static/css/main.2b62362b.css.map",
+    "main.dda8bd02.js.map": "/Einsie.github.io/portfolio/public/static/js/main.dda8bd02.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2b62362b.css",
+    "static/js/main.dda8bd02.js"
+  ]
+}
