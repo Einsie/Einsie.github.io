@@ -66,13 +66,8 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
     // Define the first strike variable if first strike happens and
     //    the stepcounters to see how many rounds each army has done
     let firstStrike = [false];
-<<<<<<< Updated upstream
-    let army0StepCounter = 1;
-    let army1StepCounter = 1;
-=======
     let army0StepCounter = armies[0].range === armies[1].range ? 0 : 1;
     let army1StepCounter = armies[0].range === armies[1].range ? 0 : 1;
->>>>>>> Stashed changes
 
     // Infinity loop safeguard variable used during testing
     /* let infinitySafeguard = 0; */

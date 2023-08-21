@@ -33,11 +33,6 @@ export default function AoE4TargetFireTool() {
 
   //add handler functions being passed on to children
 
-  // handleAddArmy adds a new army to armies list
-  function handleAddArmy(army) {
-    setArmies([...armies, army]);
-  }
-
   // handleRemoveArmy removes an army from armies list and updates
   //    the id of remaining armies using index
   function handleRemoveArmy(oldArmy) {
@@ -156,7 +151,7 @@ export default function AoE4TargetFireTool() {
         {armies.length < 2 && (
           <AddArmyForm
             armies={armies}
-            onAddArmy={handleAddArmy}
+            onAddArmy={setArmies}
             curEditArmy={curEditArmy}
             onEditCurArmy={setCurEditArmy}
             presetArmies={presetArmies}

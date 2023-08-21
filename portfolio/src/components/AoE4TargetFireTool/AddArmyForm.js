@@ -90,7 +90,7 @@ export default function AddArmyForm({
       range: curEditArmy.range > 0 ? Number(curEditArmy.range) : 0,
     };
     // Pass the newly created army to parent and reset the form through state held by parent
-    onAddArmy(newArmy);
+    onAddArmy([...armies, newArmy]);
     setTrueId(crypto.randomUUID());
     handleSetName("");
     handleSetDamage("");
