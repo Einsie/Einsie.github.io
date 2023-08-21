@@ -15,7 +15,7 @@
 import { useState } from "react";
 import AddArmyForm from "./AddArmyForm";
 import ArmyComparison from "./ArmyComparison";
-import ArmiesList from "./ArmiesList";
+import CurrentArmies from "./CurrentArmies";
 import SideBar from "./SideBar";
 import CombatLog from "./CombatLog";
 import { initialPreset } from "./initialPreset";
@@ -57,15 +57,6 @@ export default function AoE4TargetFireTool() {
   function handleEditArmy(army) {
     handleRemoveArmy(army);
     armies.length < 3 && setCurEditArmy(army);
-  }
-
-  // handleAddPresetArmy adds a new preset if the trueId does not exist in
-  //    the current presets yet.
-  function handleAddPresetArmy(army) {
-    !presetArmies.reduce(
-      (acc, preset) => preset.trueId === army.trueId || acc,
-      false
-    ) && setPresetArmies([...presetArmies, army]);
   }
 
   // handleSetPresetArmy sets the chosen presetArmy as the new currently
@@ -155,10 +146,10 @@ export default function AoE4TargetFireTool() {
             curEditArmy={curEditArmy}
             onEditCurArmy={setCurEditArmy}
             presetArmies={presetArmies}
-            onAddPresetArmy={handleAddPresetArmy}
+            onAddPresetArmy={setPresetArmies}
           />
         )}
-        <ArmiesList
+        <CurrentArmies
           armies={armies}
           onEditArmy={handleEditArmy}
           onClearArmy={handleClearArmies}

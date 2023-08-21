@@ -3,7 +3,9 @@
 
 // Import necessary libraries to component
 import { useState } from "react";
-import Button from "../Button";
+import TextInput from "../BasicCustomComponents/TextInput";
+import SelectOptionInput from "../BasicCustomComponents/SelectOptionInput";
+import SideBarList from "./SideBarList";
 
 // Declare SideBar as the default function returned from file
 //    destructure the prop for necessary parameters
@@ -78,47 +80,15 @@ export default function SideBar({
     <div className={`sidebar ${position}`}>
       {children}
       {/* The following is the search bar, using controlled input element */}
-      <input
-        type="text"
+      <TextInput
         placeholder="Search by name"
         value={searchInput}
         onChange={(event) => setSearchInput(event.target.value)}
-      ></input>
-      {
-        /* The following is the drop down select for sorting as controlled element */
-        <select
-          value={sortBy}
-          onChange={(event) => setSortBy(event.target.value)}
-        >
-          <option value="oldest">Sort by Oldest</option>
-          <option value="recent">Sort by most recent</option>
-          <option value="name">Sort by name</option>
-        </select>
-      }
-      <ul>
-        {
-          /* The following are the list elements, content based on if it
-                is a preset or combat log being listed. Both have buttons
-                for using the element or removing it from list */
-          sortedList?.map((curItem, index) => (
-            <li key={index}>
-              {curItem?.isPreset ? (
-                <span>
-                  {curItem.name}: dmg:{curItem.damage} as:
-                  {curItem.attackSpeed} hp:{curItem.health} qnt:{" "}
-                  {curItem.quantity} rng: {curItem.range}{" "}
-                </span>
-              ) : (
-                <span>
-                  {curItem[2]} x{curItem[3]} VS {curItem[4]} x{curItem[5]}{" "}
-                </span>
-              )}
-              <Button onClick={() => onUse(curItem)}>Use</Button>
-              <Button onClick={() => onRemove(curItem)}>Remove</Button>
-            </li>
-          ))
-        }
-      </ul>
+      />
+      {/* The following is the drop down select for sorting as controlled element */}
+      <SelectOptionInput value={sortBy} onChange={(event) => setSortBy(event.target.value)} options={["oldest", "recent", "name"]} extraContent={"Sort by "}/>
+      <SideBarList sortedList={sortedList} onUse={onUse} onRemove={onRemove} />
     </div>
   );
 }
+

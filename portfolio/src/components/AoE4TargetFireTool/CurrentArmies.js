@@ -3,26 +3,18 @@
       the content accordingly */
 
 // Import necessary libraries for the component
-import Button from "../Button";
+import Button from "../BasicCustomComponents/Button";
+import CurrentArmiesList from "./CurrentArmiesList";
 
 // ArmiesList is the default function of the component being exported
 //    destructure the propr for necessary parameters
-export default function ArmiesList({ armies, onEditArmy, onClearArmy }) {
+export default function CurrentArmies({ armies, onEditArmy, onClearArmy }) {
   return (
     <div className="tool-component">
       {armies.length > 0 ? (
         <>
           <p>💂‍♂️ List of current armies 💂‍♂️</p>
-          <ul>
-            {armies.map((army) => (
-              <li key={army.name}>
-                {army.name} damage: {army.damage}, attack speed:{" "}
-                {army.attackSpeed}, health: {army.health}, quantity:{" "}
-                {army.quantity}, range: {army.range}{" "}
-                <Button onClick={() => onEditArmy(army)}>Edit</Button>
-              </li>
-            ))}
-          </ul>
+          <CurrentArmiesList armies={armies} onEditArmy={onEditArmy} />
           {armies.length === 1 && (
             <p>Add a second army and you're ready to go!</p>
           )}

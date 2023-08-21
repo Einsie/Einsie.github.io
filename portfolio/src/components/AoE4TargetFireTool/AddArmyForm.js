@@ -2,17 +2,19 @@
         of presetArmies or armies with form data */
 
 // Import necessary libraries for component
-import Button from "../Button";
+import Button from "../BasicCustomComponents/Button";
+import TextInput from "../BasicCustomComponents/TextInput";
+import DescriptionBox from "../BasicCustomComponents/DescriptionBox";
 
 //AddArmyForm is the default function being exported by the component
 //destructure the prop into necessary parameters being used
 export default function AddArmyForm({
-  onAddArmy,
   armies,
+  onAddArmy,
   curEditArmy,
   onEditCurArmy,
-  onAddPresetArmy,
   presetArmies,
+  onAddPresetArmy,
 }) {
   // Declare a boolean for clear button to be displayed if form has data
   const hasFormData =
@@ -91,13 +93,7 @@ export default function AddArmyForm({
     };
     // Pass the newly created army to parent and reset the form through state held by parent
     onAddArmy([...armies, newArmy]);
-    setTrueId(crypto.randomUUID());
-    handleSetName("");
-    handleSetDamage("");
-    handleSetAttackSpeed("");
-    handleSetHealth("");
-    handleSetQuantity("");
-    handleSetRange("");
+    handleClear();
   }
 
   // handleAddPreset handles the addition of form data as a preset
@@ -106,7 +102,7 @@ export default function AddArmyForm({
     event.preventDefault();
 
     if (curEditArmy.name === "") return;
-    const newArmy = {
+    const newPreset = {
       id: presetArmies.length,
       trueId: curEditArmy.trueId,
       name: curEditArmy.name,
@@ -118,8 +114,12 @@ export default function AddArmyForm({
       isPreset: true,
     };
 
-    //pass on the newly created army preset to parent state
-    onAddPresetArmy(newArmy);
+  //pass on the newly created army preset to parent state if the trueId does not exist in
+  //    the current presets yet.
+    !presetArmies.reduce(
+      (acc, preset) => preset.trueId === newPreset.trueId || acc,
+      false
+    ) && onAddPresetArmy([...presetArmies, newPreset]);
   }
 
   // handleClear handles the clear button behaviour, setting all form
@@ -136,57 +136,50 @@ export default function AddArmyForm({
 
   return (
     <div className="tool-component">
-      <p>
-        Use this form to add an army to your army list below. Presets can be
-        found from sidebar on the left.
-      </p>
-      <p>
-        Negative values or empty fields will be turned to default of 1. These
-        restrictions do not apply to adding a new preset.
-      </p>
-      <p>
-        Range of 0 means the army will not attack. For example, you can use this
-        for buildings or for firing at melee armies.
-      </p>
+      <DescriptionBox>
+        <p>
+          Use this form to add an army to your army list below. Presets can be
+          found from sidebar on the left.
+        </p>
+        <p>
+          Negative values or empty fields will be turned to default of 1. These
+          restrictions do not apply to adding a new preset.
+        </p>
+        <p>
+          Range of 0 means the army will not attack. For example, you can use this
+          for buildings or for firing at melee armies.
+        </p>
+      </DescriptionBox> 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name* required"
-          value={curEditArmy.name}
-          onChange={(event) => handleSetName(event.target.value)}
-        ></input>
-        <input
-          type="text"
-          placeholder="damage: default 1"
+        <TextInput placeholder={"Name* required"} value={curEditArmy.name} onChange={(event) => handleSetName(event.target.value)}/>
+        <TextInput
+          placeholder={"damage: default 1"}
           value={curEditArmy.damage}
           onChange={(event) =>
             handleSetDamage(
               isNaN(Number(event.target.value)) ? "" : event.target.value
             )
           }
-        ></input>
-        <input
-          type="text"
-          placeholder="attackSpeed: default 1"
+        />
+        <TextInput
+          placeholder={"attackSpeed: default 1"}
           value={curEditArmy.attackSpeed}
           onChange={(event) =>
             handleSetAttackSpeed(
               isNaN(Number(event.target.value)) ? "" : event.target.value
             )
           }
-        ></input>
-        <input
-          type="text"
-          placeholder="health: default 1"
+        />
+        <TextInput
+          placeholder={"health: default 1"}
           value={curEditArmy.health}
           onChange={(event) =>
             handleSetHealth(
               isNaN(Number(event.target.value)) ? "" : event.target.value
             )
           }
-        ></input>
-        <input
-          type="text"
+        />
+        <TextInput
           placeholder="quantity: default 1"
           value={curEditArmy.quantity}
           onChange={(event) =>
@@ -194,9 +187,8 @@ export default function AddArmyForm({
               isNaN(Number(event.target.value)) ? "" : event.target.value
             )
           }
-        ></input>
-        <input
-          type="text"
+        />
+        <TextInput
           placeholder="range: default 0"
           value={curEditArmy.range}
           onChange={(event) =>
@@ -204,7 +196,7 @@ export default function AddArmyForm({
               isNaN(Number(event.target.value)) ? "" : event.target.value
             )
           }
-        ></input>
+        />
         <Button>Add army</Button>
         <Button onClick={handleAddPreset}>Add to presets</Button>
         {hasFormData && <Button onClick={handleClear}>Clear</Button>}

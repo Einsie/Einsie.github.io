@@ -5,8 +5,9 @@
 // Import necessary libraries for the component
 import { useState } from "react";
 import "./styles.css";
+import Button from "./BasicCustomComponents/Button";
+import DescriptionBox from "./BasicCustomComponents/DescriptionBox";
 import AoE4TargetFireTool from "./AoE4TargetFireTool/AoE4TargetFireTool";
-import Button from "./Button";
 
 // App is the default functin being exported from the component
 export default function App() {
@@ -31,7 +32,7 @@ export default function App() {
         AoE4TargetFireToolIsOpen ? (
           <AoE4TargetFireTool />
         ) : (
-          <div>
+          <DescriptionBox>
             Description:
             <p>
               This is a React project, meant for calculating the winner of two
@@ -45,7 +46,7 @@ export default function App() {
               The calculations require two armies to be inserted before they can
               be compared
             </p>
-          </div>
+          </DescriptionBox>
         )
       }
     </div>

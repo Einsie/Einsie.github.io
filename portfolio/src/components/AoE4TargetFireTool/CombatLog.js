@@ -6,7 +6,8 @@
     It can also clear currently displayed log from parent state */
 
 // Import necessary libraries for the component
-import Button from "../Button";
+import Button from "../BasicCustomComponents/Button";
+import CombatLogEntries from "./CombatLogEntries";
 
 // CombatLog is the default function being exported from the component
 //    destructure the prop for necessary parameters
@@ -31,11 +32,7 @@ export default function CombatLog({
 
       {combatHistoryIsOpen && (
         <>
-          <ul>
-            {curCombatLog.map((curLog, index) => (
-              <li key={index}>{curLog}</li>
-            ))}
-          </ul>
+          <CombatLogEntries curCombatLog={curCombatLog}/>
           <Button
             onClick={() => onSetCombatHistoryIsOpen(!combatHistoryIsOpen)}
           >

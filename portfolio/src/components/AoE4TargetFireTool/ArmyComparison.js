@@ -5,7 +5,7 @@
 
 // Import necessary libraries for the component
 import { useState } from "react";
-import Button from "../Button";
+import Button from "../BasicCustomComponents/Button";
 
 //ArmyComparison is the default function being exported from the component
 //  destructure the prop for necessary parameters
