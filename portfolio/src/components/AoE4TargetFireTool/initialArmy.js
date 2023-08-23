@@ -7,6 +7,7 @@ export const initialArmy = {
   damage: "",
   attackSpeed: "",
   health: "",
+  armor: "",
   quantity: "",
   range: "",
   isPreset: true,

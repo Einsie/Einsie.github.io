@@ -309,9 +309,9 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
           Both armies deal damage to each other. */
       if (simultaneousStrike) {
         finalHealth[defender] -=
-          armies[aggressor].damage * finalQuantity[aggressor];
+        armies[aggressor].damage - armies[defender].armor > 0 ? (armies[aggressor].damage - armies[defender].armor) * finalQuantity[aggressor] : finalQuantity[aggressor];
         finalHealth[aggressor] -=
-          armies[defender].damage * finalQuantity[defender];
+        armies[defender].damage - armies[aggressor].armor > 0 ? (armies[defender].damage - armies[aggressor].armor) * finalQuantity[defender] : finalQuantity[defender];
         tempCombatLog.push(
           <>
             <p>
@@ -329,7 +329,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
       // if the attack wasn't a simultaenous strike, only defender takes damage
       else
         finalHealth[defender] -=
-          armies[aggressor].damage * finalQuantity[aggressor];
+        armies[aggressor].damage - armies[defender].armor > 0 ? (armies[aggressor].damage - armies[defender].armor) * finalQuantity[aggressor] : finalQuantity[aggressor];
 
       /* Check if first strike happened, this also stops the stepcounter from
             being updated since it happens outside regular combat order */

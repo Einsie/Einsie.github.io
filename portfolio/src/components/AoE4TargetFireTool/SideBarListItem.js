@@ -4,9 +4,7 @@ export default function SideBarListItem({ curItem, onUse, onRemove }) {
   return (<li>
     {curItem?.isPreset ? (
       <span>
-        {curItem.name}: dmg:{curItem.damage} as:
-        {curItem.attackSpeed} hp:{curItem.health} qnt:{" "}
-        {curItem.quantity} rng: {curItem.range}{" "}
+        {curItem.name}: dmg:{curItem.damage} as:{curItem.attackSpeed} hp:{curItem.health} ar:{curItem.armor} qnt:{curItem.quantity} rng:{curItem.range}{" "}
       </span>
     ) : (
       <span>

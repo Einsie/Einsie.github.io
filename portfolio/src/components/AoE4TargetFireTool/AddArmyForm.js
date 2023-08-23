@@ -22,6 +22,7 @@ export default function AddArmyForm({
     curEditArmy.damage !== "" ||
     curEditArmy.attackSpeed !== "" ||
     curEditArmy.health !== "" ||
+    curEditArmy.armor !== "" ||
     curEditArmy.quantity !== "" ||
     curEditArmy.range !== "";
 
@@ -61,6 +62,12 @@ export default function AddArmyForm({
     onEditCurArmy((curEditArmy) => true && { ...curEditArmy, health: value });
   }
 
+  //  handleSetArmor updates the trueId and passes an updated army with new armor to parent
+  function handleSetArmor(value) {
+    setTrueId(crypto.randomUUID());
+    onEditCurArmy((curEditArmy) => true && { ...curEditArmy, armor: value });
+  }
+
   //  handleSetQuantity updates the trueId and passes an updated army with new quantity to parent
   function handleSetQuantity(value) {
     setTrueId(crypto.randomUUID());
@@ -88,6 +95,7 @@ export default function AddArmyForm({
       attackSpeed:
         curEditArmy.attackSpeed > 0 ? Number(curEditArmy.attackSpeed) : 1,
       health: curEditArmy.health > 0 ? Number(curEditArmy.health) : 1,
+      armor: curEditArmy.armor > 0 ? Number(curEditArmy.armor) : 0,
       quantity: curEditArmy.quantity > 0 ? Number(curEditArmy.quantity) : 1,
       range: curEditArmy.range > 0 ? Number(curEditArmy.range) : 0,
     };
@@ -109,6 +117,7 @@ export default function AddArmyForm({
       damage: curEditArmy.damage,
       attackSpeed: curEditArmy.attackSpeed,
       health: curEditArmy.health,
+      armor: curEditArmy.armor,
       quantity: curEditArmy.quantity,
       range: curEditArmy.range,
       isPreset: true,
@@ -130,6 +139,7 @@ export default function AddArmyForm({
     handleSetDamage("");
     handleSetAttackSpeed("");
     handleSetHealth("");
+    handleSetArmor("");
     handleSetQuantity("");
     handleSetRange("");
   }
@@ -175,6 +185,15 @@ export default function AddArmyForm({
           value={curEditArmy.health}
           onChange={(event) =>
             handleSetHealth(
+              isNaN(Number(event.target.value)) ? "" : event.target.value
+            )
+          }
+        />
+        <TextInput
+          placeholder={"armor: default 0"}
+          value={curEditArmy.armor}
+          onChange={(event) =>
+            handleSetArmor(
               isNaN(Number(event.target.value)) ? "" : event.target.value
             )
           }
