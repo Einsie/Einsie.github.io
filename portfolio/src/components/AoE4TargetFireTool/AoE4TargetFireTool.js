@@ -13,13 +13,16 @@
 
 // Import necessary libraries for the component
 import { useState } from "react";
+import { initialPreset } from "./InitialVariables/initialPreset";
+import { initialArmy } from "./InitialVariables/initialArmy";
+import { initialCombatLog } from "./InitialVariables/initialCombatLog";
 import AddArmyForm from "./AddArmyForm";
 import ArmyComparison from "./ArmyComparison";
-import CurrentArmies from "./CurrentArmies";
-import SideBar from "./SideBar";
-import CombatLog from "./CombatLog";
-import { initialPreset } from "./initialPreset";
-import { initialArmy } from "./initialArmy";
+import CurrentArmies from "./CurrentArmies/CurrentArmies";
+import SideBar from "./SideBar/SideBar";
+import CombatLog from "./CombatLog/CombatLog";
+import CurrentArmiesList from "./CurrentArmies/CurrentArmiesList";
+import CombatLogEntries from "./CombatLog/CombatLogEntries";
 
 // AoE4TargetFireTool is the default function being exported
 export default function AoE4TargetFireTool() {
@@ -28,8 +31,7 @@ export default function AoE4TargetFireTool() {
   const [curEditArmy, setCurEditArmy] = useState(initialArmy);
   const [presetArmies, setPresetArmies] = useState(initialPreset);
   const [combatlogHistory, setCombatLogHistory] = useState([]);
-  const [curCombatLog, setCurCombatLog] = useState([]);
-  const [combatHistoryIsOpen, setCombatHistoryIsOpen] = useState(false);
+  const [curCombatLog, setCurCombatLog] = useState(initialCombatLog);
 
   //add handler functions being passed on to children
 
@@ -84,12 +86,13 @@ export default function AoE4TargetFireTool() {
     if (
       combatlogHistory.length > 0 &&
       combatlogHistory.reduce(
-        (accumulator, curLog) => curLog[1] === combatLog[1] || accumulator,
+        (accumulator, curLog) =>
+          curLog.trueId === combatLog.trueId || accumulator,
         false
       )
     )
       return;
-    combatLog[0] = combatlogHistory.length;
+    combatLog.id = combatlogHistory.length;
     setCombatLogHistory((combatlogHistory) => [...combatlogHistory, combatLog]);
   }
 
@@ -105,12 +108,10 @@ export default function AoE4TargetFireTool() {
   function handleRemoveCombatLogFromHistory(combatLog) {
     setCombatLogHistory((combatlogHistory) =>
       combatlogHistory
-        .filter((curCombatLog) => curCombatLog[0] !== combatLog[0])
+        .filter((curCombatLog) => curCombatLog.id !== combatLog.id)
         .map((curCombatLog, curCombatLogIndex) =>
-          curCombatLog[0] !== curCombatLogIndex
-            ? curCombatLog.map((curLog, curLogIndex) =>
-                curLogIndex === 0 ? curCombatLogIndex : curLog
-              )
+          curCombatLog.id !== curCombatLogIndex
+            ? { ...curCombatLog, id: curCombatLogIndex }
             : curCombatLog
         )
     );
@@ -127,6 +128,7 @@ export default function AoE4TargetFireTool() {
       >
         <p>Unit Presets</p>
       </SideBar>
+
       <SideBar
         position={"right"}
         array={combatlogHistory}
@@ -135,6 +137,7 @@ export default function AoE4TargetFireTool() {
       >
         <p>Combat log history</p>
       </SideBar>
+
       <div className="inliner target-fire-tool">
         <h1>Age of Empires 4 🏰</h1>
         <h3>🏹 Target fire comparison tool for ranged armies 🏹</h3>
@@ -149,11 +152,11 @@ export default function AoE4TargetFireTool() {
             onAddPresetArmy={setPresetArmies}
           />
         )}
-        <CurrentArmies
-          armies={armies}
-          onEditArmy={handleEditArmy}
-          onClearArmy={handleClearArmies}
-        />
+
+        <CurrentArmies armies={armies} onClearArmy={handleClearArmies}>
+          <CurrentArmiesList armies={armies} onEditArmy={handleEditArmy} />
+        </CurrentArmies>
+
         {armies.length > 0 && (
           <ArmyComparison
             armies={armies}
@@ -163,14 +166,14 @@ export default function AoE4TargetFireTool() {
           />
         )}
 
-        {curCombatLog.length > 0 && (
+        {curCombatLog.log.length > 0 && (
           <CombatLog
             onAddCombatLogToHistory={handleAddCombatLogToHistory}
-            onSetCombatHistoryIsOpen={setCombatHistoryIsOpen}
-            combatHistoryIsOpen={combatHistoryIsOpen}
             curCombatLog={curCombatLog}
             onSetCurCombatLog={handleSetCurCombatLog}
-          />
+          >
+            <CombatLogEntries curCombatLog={curCombatLog} />
+          </CombatLog>
         )}
       </div>
     </>

@@ -3,18 +3,17 @@
       the content accordingly */
 
 // Import necessary libraries for the component
-import Button from "../BasicCustomComponents/Button";
-import CurrentArmiesList from "./CurrentArmiesList";
+import Button from "../../BasicCustomComponents/Button";
 
 // ArmiesList is the default function of the component being exported
 //    destructure the propr for necessary parameters
-export default function CurrentArmies({ armies, onEditArmy, onClearArmy }) {
+export default function CurrentArmies({ children, armies, onClearArmy }) {
   return (
     <div className="tool-component">
       {armies.length > 0 ? (
         <>
           <p>💂‍♂️ List of current armies 💂‍♂️</p>
-          <CurrentArmiesList armies={armies} onEditArmy={onEditArmy} />
+          {children}
           {armies.length === 1 && (
             <p>Add a second army and you're ready to go!</p>
           )}

@@ -6,35 +6,38 @@
     It can also clear currently displayed log from parent state */
 
 // Import necessary libraries for the component
-import Button from "../BasicCustomComponents/Button";
-import CombatLogEntries from "./CombatLogEntries";
+import { useState } from "react";
+import Button from "../../BasicCustomComponents/Button";
+import { initialCombatLog } from "../InitialVariables/initialCombatLog";
 
 // CombatLog is the default function being exported from the component
 //    destructure the prop for necessary parameters
 export default function CombatLog({
+  children,
   onAddCombatLogToHistory,
-  onSetCombatHistoryIsOpen,
-  combatHistoryIsOpen,
   curCombatLog,
   onSetCurCombatLog,
 }) {
+  const [combatHistoryIsOpen, setCombatHistoryIsOpen] = useState(false);
+
   return (
     <div className="tool-component">
-      <Button onClick={() => onSetCombatHistoryIsOpen(!combatHistoryIsOpen)}>
+      <Button onClick={() => setCombatHistoryIsOpen(!combatHistoryIsOpen)}>
         {combatHistoryIsOpen ? "Close combat log" : "Open combat log"}
       </Button>
       <Button onClick={() => onAddCombatLogToHistory(curCombatLog)}>
         Add this combat log to history
       </Button>
-      <Button onClick={() => onSetCurCombatLog([])}>
+      <Button onClick={() => onSetCurCombatLog(initialCombatLog)}>
         Clear current combat log
       </Button>
 
       {combatHistoryIsOpen && (
         <>
-          <CombatLogEntries curCombatLog={curCombatLog}/>
+          {children}
           <Button
-            onClick={() => onSetCombatHistoryIsOpen(!combatHistoryIsOpen)}
+            onClick={() => setCombatHistoryIsOpen(!combatHistoryIsOpen)}
+            extraStyling={"follow"}
           >
             Close combat history
           </Button>

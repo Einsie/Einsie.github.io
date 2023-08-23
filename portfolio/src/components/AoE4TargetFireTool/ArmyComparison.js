@@ -43,14 +43,17 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
     // Initialise the temporary combat log with id, trueID,
     //    winner name and quantity, loser name and quantity
     //    for later defining at pre-determined indexes
-    tempCombatLog = [
-      0,
-      crypto.randomUUID(),
-      "winner",
-      "winnerQnt",
-      "loser",
-      "loserQnt",
-    ];
+    tempCombatLog = {
+      id: 0,
+      trueId: crypto.randomUUID(),
+      isPreset: false,
+      name: "winner",
+      quantity: "winnerQnt",
+      loser: "loser",
+      loserQnt: "loserQnt",
+      battleSummary: "summary",
+      log: [],
+    };
     finalHealth = [];
     finalHealthMilestone = [];
     finalQuantity = [];
@@ -86,7 +89,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
       : (firstStrike = [false]);
 
     // Begin combat log recording
-    tempCombatLog.push(<h2>Beginning combat</h2>);
+    tempCombatLog.log.push(<h2>Beginning combat</h2>);
 
     // if first strike was determined to be possible, do it.
     firstStrike[0] === true && dealDamage(firstStrike[2], firstStrike[1]);
@@ -104,7 +107,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
       /* infinitySafeguard += 1;
       infinitySafeguard > 390 && onSetCurCombatLog(tempCombatLog); */
 
-      tempCombatLog.push(
+      tempCombatLog.log.push(
         <>
           <h4 className="new-combat-round">New round of combat</h4>
           <h4>Checking for army losses:</h4>
@@ -174,7 +177,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
         finalHealth[index] = finalHealthMilestone[index];
         finalHealthMilestone[index] =
           (finalQuantity[index] - 1) * armies[index].health;
-        tempCombatLog.push(
+        tempCombatLog.log.push(
           <>
             <p>Army {armies[index].name} has lost one 💀</p>
             <p>Health left: {finalHealth[index]}🩸</p>
@@ -217,7 +220,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
               defenderIndex === 1 ? army0StepCounter - 1 : army1StepCounter - 1,
           },
         ];
-        tempCombatLog.push(
+        tempCombatLog.log.push(
           <p>💀 The battle was a bloody errand and ended in a draw 💀</p>
         );
       } else {
@@ -233,7 +236,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
                 : army0StepCounter - 1,
           },
         ];
-        tempCombatLog.push(
+        tempCombatLog.battleSummary = (
           <p>
             👑 Winner was {newWinner[0].name} with 💂‍♂️{newWinner[0].quantity}{" "}
             {newWinner[0].quantity > 1 ? "units" : "unit"} left 👑
@@ -242,10 +245,10 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
       }
 
       // update the originally initialised combat log indexes with desired data
-      tempCombatLog[2] = armies[aggressorIndex].name;
-      tempCombatLog[3] = armies[aggressorIndex].quantity;
-      tempCombatLog[4] = armies[defenderIndex].name;
-      tempCombatLog[5] = armies[defenderIndex].quantity;
+      tempCombatLog.name = armies[aggressorIndex].name;
+      tempCombatLog.quantity = armies[aggressorIndex].quantity;
+      tempCombatLog.loser = armies[defenderIndex].name;
+      tempCombatLog.loserQuantity = armies[defenderIndex].quantity;
 
       // Since updating a state variable causes a re-render,
       //    which re-initialises instance variable data, these are
@@ -271,7 +274,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
       simultaneousStrike,
       stepCounter2
     ) {
-      tempCombatLog.push(
+      tempCombatLog.log.push(
         <>
           <h4>🏹 The armies Fire!</h4>
         </>
@@ -279,7 +282,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
 
       // since first strike happens outside combat order, it has unique logged data
       !firstStrike[0]
-        ? tempCombatLog.push(
+        ? tempCombatLog.log.push(
             <>
               <p>
                 {armies[aggressor].name} is dealing damage to{" "}
@@ -291,7 +294,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
               </p>
             </>
           )
-        : tempCombatLog.push(
+        : tempCombatLog.log.push(
             <>
               <p className="new-combat-round">
                 There was a first strike thanks to a greater range!
@@ -309,10 +312,16 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
           Both armies deal damage to each other. */
       if (simultaneousStrike) {
         finalHealth[defender] -=
-        armies[aggressor].damage - armies[defender].armor > 0 ? (armies[aggressor].damage - armies[defender].armor) * finalQuantity[aggressor] : finalQuantity[aggressor];
+          armies[aggressor].damage - armies[defender].armor > 0
+            ? (armies[aggressor].damage - armies[defender].armor) *
+              finalQuantity[aggressor]
+            : finalQuantity[aggressor];
         finalHealth[aggressor] -=
-        armies[defender].damage - armies[aggressor].armor > 0 ? (armies[defender].damage - armies[aggressor].armor) * finalQuantity[defender] : finalQuantity[defender];
-        tempCombatLog.push(
+          armies[defender].damage - armies[aggressor].armor > 0
+            ? (armies[defender].damage - armies[aggressor].armor) *
+              finalQuantity[defender]
+            : finalQuantity[defender];
+        tempCombatLog.log.push(
           <>
             <p>
               {armies[defender].name} has made {stepCounter2}{" "}
@@ -329,7 +338,10 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
       // if the attack wasn't a simultaenous strike, only defender takes damage
       else
         finalHealth[defender] -=
-        armies[aggressor].damage - armies[defender].armor > 0 ? (armies[aggressor].damage - armies[defender].armor) * finalQuantity[aggressor] : finalQuantity[aggressor];
+          armies[aggressor].damage - armies[defender].armor > 0
+            ? (armies[aggressor].damage - armies[defender].armor) *
+              finalQuantity[aggressor]
+            : finalQuantity[aggressor];
 
       /* Check if first strike happened, this also stops the stepcounter from
             being updated since it happens outside regular combat order */
@@ -344,7 +356,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
 
       // add the updated information for army after damage has been dealt
       //    with differing logs needed if this was simultaneous strike or not.
-      tempCombatLog.push(
+      tempCombatLog.log.push(
         <>
           {!simultaneousStrike ? (
             <p>

@@ -26,6 +26,11 @@ li {
   list-style: none;
 }
 
+.follow {
+  bottom: 8%;
+  position: sticky;
+}
+
 .sidebar {
   position: fixed;
   width: 20%;

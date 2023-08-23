@@ -123,8 +123,8 @@ export default function AddArmyForm({
       isPreset: true,
     };
 
-  //pass on the newly created army preset to parent state if the trueId does not exist in
-  //    the current presets yet.
+    //pass on the newly created army preset to parent state if the trueId does not exist in
+    //    the current presets yet.
     !presetArmies.reduce(
       (acc, preset) => preset.trueId === newPreset.trueId || acc,
       false
@@ -156,12 +156,16 @@ export default function AddArmyForm({
           restrictions do not apply to adding a new preset.
         </p>
         <p>
-          Range of 0 means the army will not attack. For example, you can use this
-          for buildings or for firing at melee armies.
+          Range of 0 means the army will not attack. For example, you can use
+          this for buildings or for firing at melee armies.
         </p>
-      </DescriptionBox> 
+      </DescriptionBox>
       <form onSubmit={handleSubmit}>
-        <TextInput placeholder={"Name* required"} value={curEditArmy.name} onChange={(event) => handleSetName(event.target.value)}/>
+        <TextInput
+          placeholder={"Name* required"}
+          value={curEditArmy.name}
+          onChange={(event) => handleSetName(event.target.value)}
+        />
         <TextInput
           placeholder={"damage: default 1"}
           value={curEditArmy.damage}
@@ -216,9 +220,11 @@ export default function AddArmyForm({
             )
           }
         />
-        <Button>Add army</Button>
-        <Button onClick={handleAddPreset}>Add to presets</Button>
-        {hasFormData && <Button onClick={handleClear}>Clear</Button>}
+        <div>
+          <Button>Add army</Button>
+          <Button onClick={handleAddPreset}>Add to presets</Button>
+          {hasFormData && <Button onClick={handleClear}>Clear</Button>}
+        </div>
       </form>
     </div>
   );
