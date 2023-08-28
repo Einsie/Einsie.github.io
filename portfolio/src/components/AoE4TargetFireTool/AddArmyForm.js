@@ -146,7 +146,7 @@ export default function AddArmyForm({
 
   return (
     <div className="tool-component">
-      <DescriptionBox>
+      <DescriptionBox collapsedNumWords={21}>
         <p>
           Use this form to add an army to your army list below. Presets can be
           found from sidebar on the left.

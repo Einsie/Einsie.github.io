@@ -32,15 +32,18 @@ export default function App() {
         AoE4TargetFireToolIsOpen ? (
           <AoE4TargetFireTool />
         ) : (
-          <DescriptionBox>
-            Description:
+          <DescriptionBox title={<h3>Description:</h3>} collapsedNumWords={15}>
             <p>
               This is a React project, meant for calculating the winner of two
-              armies, when they have queued target fire commands on one another
-              (All soldiers of an army targets singular soldier of the opponent
-              army, until it is dead, before moving on to target the next
-              soldier). Tool primarily meant for a game called Age of Empires 4,
-              but can be used for other RTS with similar mechanics.
+              ranged armies, when they have queued target fire commands on one
+              another (All soldiers of an army targets singular soldier of the
+              opponent army, until it is dead, before moving on to target the
+              next soldier).
+            </p>
+            <p>
+              {" "}
+              Tool primarily meant for a game called Age of Empires 4, but can
+              be used for other RTS with similar mechanics.
             </p>
             <p>
               The calculations require two armies to be inserted before they can
