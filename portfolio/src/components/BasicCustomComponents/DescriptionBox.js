@@ -26,8 +26,8 @@ export default function DescriptionBox({
   let childrenText = children.map((child) =>
     typeof child === "object"
       ? {
-          myType: child.type,
-          myText: child.props.children,
+          MyType: child.type,
+          MyText: child.props.children,
         }
       : child
   );
@@ -39,11 +39,11 @@ export default function DescriptionBox({
         {typeof childrenText === "object"
           ? isExpanded
             ? childrenText.map((ChildJSX) => (
-                <ChildJSX.myType key={ChildJSX.myText}>
-                  {ChildJSX.myText}
-                </ChildJSX.myType>
+                <ChildJSX.MyType key={ChildJSX.MyText}>
+                  {ChildJSX.MyText}
+                </ChildJSX.MyType>
               ))
-            : String(childrenText.map((child) => child.myText + " "))
+            : String(childrenText.map((child) => child.MyText + " "))
                 .split(" ")
                 .slice(0, collapsedNumWords)
                 .join(" ") + "... "
