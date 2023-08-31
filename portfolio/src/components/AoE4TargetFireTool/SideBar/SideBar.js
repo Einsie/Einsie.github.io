@@ -19,7 +19,7 @@ export default function SideBar({
   // Declare local  instance state variables for the component
   //    to control the input and select elements
   const [sortBySelect, setSortBySelect] = useState("oldest");
-  const [sortBySearch, setSortBySearch] = useState([]);
+  const [sortBySearch, setSortBySearch] = useState(array);
 
   let sortedList = [];
   let searchList = [];
@@ -31,25 +31,25 @@ export default function SideBar({
 
   // The parent array has to be sliced first to create
   //    a copy of it, as to not edit the original array with sort()
+
   if (array.length > 0) {
     sortBySelect === "oldest"
-      ? (sortedList = array)
+      ? (sortedList = sortBySearch)
       : sortBySelect === "recent"
-      ? (sortedList = array.slice().sort((a, b) => Number(b.id) - Number(a.id)))
-      : (sortedList = array
+      ? (sortedList = sortBySearch
+          .slice()
+          .sort((a, b) => Number(b.id) - Number(a.id)))
+      : (sortedList = sortBySearch
           .slice()
           .sort((a, b) => a.name.localeCompare(b.name)));
 
+    // Creating a list of available items SearchBar component can
+    //    compare its input against
     array[0].isPreset
       ? array.map((arrayItem) => searchList.push([arrayItem.name]))
       : array.map((arrayItem) =>
           searchList.push([arrayItem.name, arrayItem.loser])
         );
-
-    sortedList =
-      sortBySearch.length > 0
-        ? sortedList.filter((curItem, index) => sortBySearch[index] === true)
-        : sortedList;
   }
 
   // Return jsx to parent component, location and some content taken
@@ -69,7 +69,15 @@ export default function SideBar({
         options={["oldest", "recent", "name"]}
         extraContent={"Sort by "}
       />
-      <SideBarList sortedList={sortedList} onUse={onUse} onRemove={onRemove} />
+      {sortBySearch.length > 0 ? (
+        <SideBarList
+          sortedList={sortedList}
+          onUse={onUse}
+          onRemove={onRemove}
+        />
+      ) : (
+        <p>No results available</p>
+      )}
     </div>
   );
 }

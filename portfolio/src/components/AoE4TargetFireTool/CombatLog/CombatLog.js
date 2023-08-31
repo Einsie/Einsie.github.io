@@ -18,7 +18,7 @@ export default function CombatLog({
   curCombatLog,
   onSetCurCombatLog,
 }) {
-  const [combatHistoryIsOpen, setCombatHistoryIsOpen] = useState(false);
+  const [combatHistoryIsOpen, setCombatHistoryIsOpen] = useState(true);
 
   return (
     <div className="tool-component">

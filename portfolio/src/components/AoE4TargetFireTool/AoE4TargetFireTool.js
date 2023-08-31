@@ -125,6 +125,7 @@ export default function AoE4TargetFireTool() {
         array={presetArmies}
         onUse={handleSetPresetArmy}
         onRemove={handleRemovePresetArmy}
+        key={`unitpresets${presetArmies.length}`}
       >
         <p>Unit Presets</p>
       </SideBar>
@@ -134,6 +135,7 @@ export default function AoE4TargetFireTool() {
         array={combatlogHistory}
         onUse={handleSetCurCombatLog}
         onRemove={handleRemoveCombatLogFromHistory}
+        key={`combatlogs${combatlogHistory.length}`}
       >
         <p>Combat log history</p>
       </SideBar>
