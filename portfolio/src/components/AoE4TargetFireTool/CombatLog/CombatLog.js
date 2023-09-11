@@ -37,7 +37,7 @@ export default function CombatLog({
           {children}
           <Button
             onClick={() => setCombatHistoryIsOpen(!combatHistoryIsOpen)}
-            extraStyling={"follow"}
+            extraClasses={"follow"}
           >
             Close combat history
           </Button>
