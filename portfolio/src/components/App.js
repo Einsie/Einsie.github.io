@@ -108,32 +108,35 @@ export default function App() {
           }
         >
           <br />
-          <Button
-            onClick={() =>
-              window.open(
-                "https://github.com/Einsie/EntryProject_TUFAPI",
-                "_blank",
-                "noreferrer"
-              )
-            }
-          >
-            Click to open Git repository in new window
-          </Button>
-          <DescriptionBox
-            title={<h3>Description:</h3>}
-            collapsedNumWords={15}
-            expanded={true}
-          >
-            <p>
-              This is a .Net Core Rest api project using C#, created as part of
-              an entry challenge to Gambit.
-            </p>
-            <p>
-              Clicking the button for this project, will link you to the github
-              repository this project exists in. Api currently not running
-              online for testing.
-            </p>
-          </DescriptionBox>
+          <div style={{ borderStyle: "groove" }}>
+            <Button
+              onClick={() =>
+                window.open(
+                  "https://github.com/Einsie/EntryProject_TUFAPI",
+                  "_blank",
+                  "noreferrer"
+                )
+              }
+              extraStyling={{ marginTop: "5px" }}
+            >
+              Click to open Git repository in new window
+            </Button>
+            <DescriptionBox
+              title={<h3>Description:</h3>}
+              collapsedNumWords={15}
+              expanded={true}
+            >
+              <p>
+                This is a .Net Core Rest api project using C#, created as part
+                of an entry challenge to Gambit.
+              </p>
+              <p>
+                Clicking the button for this project, will link you to the
+                github repository this project exists in. Api currently not
+                running online for testing.
+              </p>
+            </DescriptionBox>
+          </div>
         </PortfolioProjectCategory>
       )}
     </div>

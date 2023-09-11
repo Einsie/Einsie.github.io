@@ -14,7 +14,10 @@ export default function PortfolioProjectCategory({
   }
   return (
     <div style={{ borderStyle: "groove" }}>
-      <Button onClick={handleOnClick}>
+      <Button
+        onClick={handleOnClick}
+        extraStyling={{ marginTop: "5px", marginBottom: "5px" }}
+      >
         {categoryIsOpen
           ? "Close category " + categoryName
           : "Open category " + categoryName}

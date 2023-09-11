@@ -16,7 +16,7 @@ export default function PortfolioProject({
 
   return (
     <div style={{ borderStyle: "groove" }}>
-      <Button onClick={handleOnClick}>
+      <Button onClick={handleOnClick} extraStyling={{ marginTop: "5px" }}>
         {projectIsOpen
           ? "Close project " + projectName
           : "Open project " + projectName}
