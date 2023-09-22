@@ -7,7 +7,7 @@ import { useState } from "react";
 import "./styles.css";
 import DescriptionBox from "./BasicCustomComponents/DescriptionBox";
 import AoE4TargetFireTool from "./AoE4TargetFireTool/AoE4TargetFireTool";
-import AoE4EconomyBuilder from "./AoE4EconomyBuilder/AoE4EconomyBuilder";
+import AoE4EconomyBuilder from "./AoE4EconomyBuilder/AoE4EconomyBuilder-v2";
 import PortfolioProject from "./PortfolioProject";
 import PortfolioProjectCategory from "./PortfolioProjectCategory";
 import Header from "./Header";
