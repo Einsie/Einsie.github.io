@@ -60,8 +60,6 @@ export default function DescriptionBox({
       ? childrenText.split(" ").slice(0, collapsedNumWords).join(" ") + "... "
       : childrenText;
 
-  console.log(children);
-
   return (
     <div className={className}>
       {title}
