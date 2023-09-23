@@ -10,8 +10,9 @@ import AoE4TargetFireTool from "./AoE4TargetFireTool/AoE4TargetFireTool";
 import AoE4EconomyBuilder from "./AoE4EconomyBuilder/AoE4EconomyBuilder-v2";
 import PortfolioProject from "./PortfolioProject";
 import PortfolioProjectCategory from "./PortfolioProjectCategory";
-import Header from "./Header";
+import PortfolioHeader from "./PortfolioHeader";
 import Button from "./BasicCustomComponents/Button";
+import ConwayGameOfLife from "./ConwayGameOfLife/ConwayGameOfLife";
 
 // App is the default functin being exported from the component
 export default function App() {
@@ -32,11 +33,11 @@ export default function App() {
   // The returned JSX element
   return (
     <div className="app">
-      {curSelectedPortfolioCategory === "" && <Header />}
+      {curSelectedPortfolioCategory === "" && <PortfolioHeader />}
       {(curSelectedPortfolioCategory === "" ||
-        curSelectedPortfolioCategory === "Game: Age of Empires 4") && (
+        curSelectedPortfolioCategory === "Games: projects and tools") && (
         <PortfolioProjectCategory
-          categoryName={"Game: Age of Empires 4"}
+          categoryName={"Games: projects and tools"}
           onSetCurSelectedPortfolioCategory={
             handleSetCurSelectedPortfolioCategory
           }
@@ -97,12 +98,35 @@ export default function App() {
               </DescriptionBox>
             </PortfolioProject>
           )}
+          {(curSelectedPortfolioProject === "" ||
+            curSelectedPortfolioProject === "Conway's Game of Life") && (
+            <PortfolioProject
+              project={<ConwayGameOfLife />}
+              projectName={"Conway's Game of Life"}
+              onSetCurSelectedPortfolioProject={
+                handleSetCurSelectedPortfolioProject
+              }
+            >
+              <DescriptionBox
+                title={<h3>Description:</h3>}
+                collapsedNumWords={15}
+              >
+                <p>
+                  This is a React game project, a simplistic Conway's game of
+                  life using React. Done as a challenge and homework project as
+                  part of studies.
+                </p>
+              </DescriptionBox>
+            </PortfolioProject>
+          )}
         </PortfolioProjectCategory>
       )}
+
       {(curSelectedPortfolioCategory === "" ||
-        curSelectedPortfolioCategory === "Entry Challenge: Gambit TUF API") && (
+        curSelectedPortfolioCategory ===
+          "Entry Challenges: Gambit TUF API") && (
         <PortfolioProjectCategory
-          categoryName={"Entry Challenge: Gambit TUF API"}
+          categoryName={"Entry Challenges: Gambit TUF API"}
           onSetCurSelectedPortfolioCategory={
             handleSetCurSelectedPortfolioCategory
           }

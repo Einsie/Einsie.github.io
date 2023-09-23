@@ -7,7 +7,7 @@
 import { useReducer } from "react";
 import SelectOptionInput from "../BasicCustomComponents/SelectOptionInput";
 import Button from "../BasicCustomComponents/Button";
-import Header from "../Header";
+import Header from "./Header";
 import AddGoal from "./AddGoal";
 
 const exampleValues = {
@@ -183,8 +183,10 @@ export default function AoE4EconomyBuilder() {
         <h1>Age of Empires 4 🏰</h1>
         <h3>💱 Economy Builder for your build order needs 💹</h3>
         <p>
-          This project is still under development! Please return to check again
-          at a later time
+          <strong>
+            This project is still under development! Please return to check
+            again at a later time
+          </strong>
         </p>
       </Header>
       <p>Your build is called: {state.buildName}</p>

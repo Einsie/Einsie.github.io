@@ -23,34 +23,49 @@ export default function DescriptionBox({
     marginLeft: "6px",
   };
 
-  let childrenText = children.map((child) =>
-    typeof child === "object"
-      ? {
-          MyType: child.type,
-          MyText: child.props.children,
-        }
-      : child
-  );
+  const childrenText =
+    children.length > 1
+      ? children.map((child) =>
+          typeof child === "object"
+            ? {
+                MyType: child.type,
+                MyText: child.props.children,
+              }
+            : child
+        )
+      : children.props.children;
+
+  const expandedChildrenText =
+    typeof childrenText === "object"
+      ? children.length > 0
+        ? childrenText.map((ChildJSX) => (
+            <ChildJSX.MyType key={ChildJSX.MyText}>
+              {ChildJSX.MyText}
+            </ChildJSX.MyType>
+          ))
+        : String(childrenText.map((child) => child.MyText + " "))
+            .split(" ")
+            .slice(0, collapsedNumWords)
+            .join(" ") + "... "
+      : children;
+
+  const collapsedChildrenText =
+    typeof childrenText === "object"
+      ? childrenText[0].MyText?.length > collapsedNumWords
+        ? childrenText[0].MyText.split(" ")
+            .slice(0, collapsedNumWords)
+            .join(" ") + "... "
+        : childrenText[0].MyText
+      : childrenText.length > collapsedNumWords
+      ? childrenText.split(" ").slice(0, collapsedNumWords).join(" ") + "... "
+      : childrenText;
+
+  console.log(children);
 
   return (
     <div className={className}>
       {title}
-      <span>
-        {typeof childrenText === "object"
-          ? isExpanded
-            ? childrenText.map((ChildJSX) => (
-                <ChildJSX.MyType key={ChildJSX.MyText}>
-                  {ChildJSX.MyText}
-                </ChildJSX.MyType>
-              ))
-            : String(childrenText.map((child) => child.MyText + " "))
-                .split(" ")
-                .slice(0, collapsedNumWords)
-                .join(" ") + "... "
-          : children.length > 20 && !isExpanded
-          ? children.split(" ").slice(0, collapsedNumWords).join(" ") + "... "
-          : children}
-      </span>
+      <span>{isExpanded ? expandedChildrenText : collapsedChildrenText}</span>
       <button onClick={() => setIsExpanded(!isExpanded)} style={buttonStyle}>
         {isExpanded ? collapseButtonText : expandButtonText}
       </button>

@@ -1,4 +1,4 @@
-export default function Header() {
+export default function PortfolioHeader() {
   return (
     <>
       <h1>Portfolio by Albert Rantala</h1>
