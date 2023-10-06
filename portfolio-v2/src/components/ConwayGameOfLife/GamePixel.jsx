@@ -1,17 +1,17 @@
-const pixelStyleIsDead = {
-  backgroundColor: "white",
-  width: "30px",
-  height: "30px",
-  marginTop: "-2.2px",
-};
-const pixelStyleIsAlive = {
-  backgroundColor: "black",
-  width: "30px",
-  height: "30px",
-  marginTop: "-2.2px",
-};
+function GamePixel({ index, isAlive, dispatch, pixelDimensions }) {
+  const pixelStyleIsDead = {
+    backgroundColor: "white",
+    width: `${pixelDimensions.width}%`,
+    height: `${pixelDimensions.height}%`,
+    marginTop: "-2.2px",
+  };
+  const pixelStyleIsAlive = {
+    backgroundColor: "black",
+    width: `${pixelDimensions.width}%`,
+    height: `${pixelDimensions.height}%`,
+    marginTop: "-2.2px",
+  };
 
-function GamePixel({ index, isAlive, dispatch }) {
   return (
     <button
       style={isAlive ? pixelStyleIsAlive : pixelStyleIsDead}

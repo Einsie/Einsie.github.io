@@ -163,6 +163,10 @@ function ConwayGameOfLife() {
         isAlive={pixels[index]?.isAlive}
         dispatch={dispatch}
         key={index}
+        pixelDimensions={{
+          width: widthQuantity * 3,
+          height: heightQuantity * 3,
+        }}
       />
     );
   });
@@ -221,6 +225,7 @@ function ConwayGameOfLife() {
         height={heightQuantity}
         pixelList={pixelList}
       />
+      <p>aa</p>
     </ProjectContainer>
   );
 }
