@@ -1,4 +1,7 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
+import { useSearchParams } from "react-router-dom";
+
+import styles from "./ConwayGameOfLife.module.css";
 import GameScreen from "../components/ConwayGameOfLife/GameScreen";
 import GamePixel from "../components/ConwayGameOfLife/GamePixel";
 import Timer from "../components/ConwayGameOfLife/Timer";
@@ -25,12 +28,62 @@ const initialState = {
   alivePixels: [],
   status: "ready",
   gameSpeed: 1,
+  queryString: "",
 };
 
 const BASE_GAMESPEED = 1000;
+const BASE__URL = "https://einsie.github.io/conwaygameoflife";
+// const BASE__URL = "http://localhost:5173/conwaygameoflife";
 
 function reducer(state, action) {
   switch (action.type) {
+    case "setQueryString": {
+      const newQueryString = state.alivePixels.reduce(
+        (acc, cur) =>
+          acc
+            ? acc +
+              "&xPosition=" +
+              cur.xPosition +
+              "&yPosition=" +
+              cur.yPosition
+            : BASE__URL +
+              acc +
+              "?width=" +
+              state.widthQuantity +
+              "&height=" +
+              state.heightQuantity +
+              "&xPosition=" +
+              cur.xPosition +
+              "&yPosition=" +
+              cur.yPosition,
+        ""
+      );
+      return { ...state, queryString: newQueryString };
+    }
+    case "clearQueryString":
+      return {
+        ...state,
+        queryString: "",
+      };
+    case "initialiseStateFromQueryString": {
+      const newAlivePixels = Array.from(
+        {
+          length: action.payload.xPosition.length,
+        },
+        (value, index) =>
+          (value = {
+            isAlive: true,
+            xPosition: Number(action.payload.xPosition[index]),
+            yPosition: Number(action.payload.yPosition[index]),
+          })
+      );
+      return {
+        ...state,
+        widthQuantity: Number(action.payload.width),
+        heightQuantity: Number(action.payload.height),
+        alivePixels: newAlivePixels,
+      };
+    }
     case "setIsRunning":
       return {
         ...state,
@@ -188,6 +241,7 @@ function reducer(state, action) {
 }
 
 function ConwayGameOfLife() {
+  const [searchParams] = useSearchParams();
   const [
     {
       widthQuantity,
@@ -196,6 +250,7 @@ function ConwayGameOfLife() {
       secondsRunning,
       alivePixels,
       gameSpeed,
+      queryString,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -224,6 +279,28 @@ function ConwayGameOfLife() {
     );
   });
 
+  console.log(pixelList);
+
+  useEffect(
+    function () {
+      const widthParams = searchParams.getAll("width");
+      const heightParams = searchParams.getAll("height");
+      const xPositionParams = searchParams.getAll("xPosition");
+      const yPositionParams = searchParams.getAll("yPosition");
+
+      dispatch({
+        type: "initialiseStateFromQueryString",
+        payload: {
+          width: widthParams,
+          height: heightParams,
+          xPosition: xPositionParams,
+          yPosition: yPositionParams,
+        },
+      });
+    },
+    [searchParams]
+  );
+
   return (
     <>
       <NavBar />
@@ -233,31 +310,65 @@ function ConwayGameOfLife() {
           To play the game, click pixels to turn them alive. Then click the
           start the game button
         </h4>
-        <h4>
+        <h4 className={styles.urlTextarea}>
           You can also hold down control key and hover over pixels to turn them
           alive and drag as you wish.
         </h4>
-        <br />
-        <p>Max width and height is 50</p>
-        <span>Width: </span>
-        <input
-          value={widthQuantity}
-          onChange={(event) =>
-            dispatch({ type: "setWidthQuantity", payload: event.target.value })
-          }
-          disabled={isRunning}
-        />
-        <br />
-        <span>Height: </span>
-        <input
-          value={heightQuantity}
-          onChange={(event) =>
-            dispatch({ type: "setHeightQuantity", payload: event.target.value })
-          }
-          disabled={isRunning}
-        />
-        <br />
-        <br />
+        {!isRunning && (
+          <>
+            {queryString && (
+              <>
+                <textarea value={queryString} readOnly={true} />
+                <br />
+              </>
+            )}{" "}
+            <button
+              onClick={() => dispatch({ type: "setQueryString" })}
+              disabled={!alivePixels.length > 0}
+            >
+              generate URL
+            </button>
+            <button
+              onClick={() => dispatch({ type: "clearQueryString" })}
+              disabled={!queryString}
+            >
+              clear URL
+            </button>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(queryString);
+              }}
+              disabled={!queryString}
+            >
+              copy URL
+            </button>
+            <br />
+            <p>Max width and height is 50</p>
+            <span>Width: </span>
+            <input
+              value={widthQuantity}
+              onChange={(event) =>
+                dispatch({
+                  type: "setWidthQuantity",
+                  payload: event.target.value,
+                })
+              }
+            />
+            <br />
+            <span>Height: </span>
+            <input
+              value={heightQuantity}
+              onChange={(event) =>
+                dispatch({
+                  type: "setHeightQuantity",
+                  payload: event.target.value,
+                })
+              }
+            />
+            <br />
+            <br />
+          </>
+        )}
         <button
           onClick={() => dispatch({ type: "setIsRunning" })}
           disabled={widthQuantity === 0 || heightQuantity === 0}
@@ -272,24 +383,29 @@ function ConwayGameOfLife() {
         </button>
         <br />
         <br />
-        <p>Game speed multiplier:</p>
-        <button
-          onClick={() =>
-            dispatch({ type: "setGameSpeed", payload: gameSpeed - 1 })
-          }
-          disabled={isRunning || gameSpeed === 1}
-        >
-          -
-        </button>
-        <span>{gameSpeed}</span>
-        <button
-          onClick={() =>
-            dispatch({ type: "setGameSpeed", payload: gameSpeed + 1 })
-          }
-          disabled={isRunning || gameSpeed === 5}
-        >
-          +
-        </button>
+        {!isRunning && (
+          <>
+            {" "}
+            <p>Game speed multiplier:</p>
+            <button
+              onClick={() =>
+                dispatch({ type: "setGameSpeed", payload: gameSpeed - 1 })
+              }
+              disabled={gameSpeed === 1}
+            >
+              -
+            </button>
+            <span>{gameSpeed}</span>
+            <button
+              onClick={() =>
+                dispatch({ type: "setGameSpeed", payload: gameSpeed + 1 })
+              }
+              disabled={gameSpeed === 5}
+            >
+              +
+            </button>
+          </>
+        )}
         <Timer
           dispatch={dispatch}
           isRunning={isRunning}
