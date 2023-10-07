@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "./BasicCustomComponents/Button";
+import Button from "./Button";
 
 export default function PortfolioProjectCategory({
   children,

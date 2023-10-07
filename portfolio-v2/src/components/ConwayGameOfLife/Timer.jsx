@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-function Timer({ dispatch, isRunning, secondsRunning }) {
+function Timer({ dispatch, isRunning, secondsRunning, gameSpeed }) {
   const minutes = Math.floor(secondsRunning / 60);
   const seconds = secondsRunning % 60;
 
@@ -8,12 +8,12 @@ function Timer({ dispatch, isRunning, secondsRunning }) {
     function () {
       const id = setInterval(function () {
         dispatch({ type: "timerTick" });
-      }, 1000);
+      }, gameSpeed);
 
       if (!isRunning) clearInterval(id);
       return () => clearInterval(id);
     },
-    [isRunning, dispatch]
+    [isRunning, dispatch, gameSpeed]
   );
 
   return (

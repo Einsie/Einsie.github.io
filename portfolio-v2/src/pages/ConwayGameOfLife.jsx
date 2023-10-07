@@ -3,6 +3,7 @@ import GameScreen from "../components/ConwayGameOfLife/GameScreen";
 import GamePixel from "../components/ConwayGameOfLife/GamePixel";
 import Timer from "../components/ConwayGameOfLife/Timer";
 import ProjectContainer from "../components/BasicCustomComponents/ProjectContainer";
+import NavBar from "../components/BasicCustomComponents/NavBar";
 
 /*
 Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -21,17 +22,12 @@ const initialState = {
   heightQuantity: 5,
   isRunning: false,
   secondsRunning: 0,
-  pixels: Array.from(
-    { length: 25 },
-    (value, index) =>
-      (value = {
-        isAlive: false,
-        xPosition: (index % 5) + 1,
-        yPosition: Math.floor(index / 5) + 1,
-      })
-  ),
+  alivePixels: [],
   status: "ready",
+  gameSpeed: 1,
 };
+
+const BASE_GAMESPEED = 1000;
 
 function reducer(state, action) {
   switch (action.type) {
@@ -48,20 +44,11 @@ function reducer(state, action) {
         return state;
 
       const newWidthQuantity =
-        Number(action.payload) <= 30 ? Number(action.payload) : 30;
+        Number(action.payload) <= 50 ? Number(action.payload) : 50;
 
       return {
         ...state,
         widthQuantity: newWidthQuantity,
-        pixels: Array.from(
-          { length: newWidthQuantity * state.heightQuantity },
-          (value, index) =>
-            (value = {
-              isAlive: false,
-              xPosition: (index % state.widthQuantity) + 1,
-              yPosition: Math.floor(index / state.widthQuantity) + 1,
-            })
-        ),
       };
     }
     case "setHeightQuantity": {
@@ -72,72 +59,127 @@ function reducer(state, action) {
         return state;
 
       const newHeightQuantity =
-        Number(action.payload) <= 30 ? Number(action.payload) : 30;
+        Number(action.payload) <= 50 ? Number(action.payload) : 50;
 
       return {
         ...state,
         heightQuantity: newHeightQuantity,
-        pixels: Array.from(
-          { length: newHeightQuantity * state.widthQuantity },
-          (value, index) =>
-            (value = {
-              isAlive: false,
-              xPosition: (index % state.widthQuantity) + 1,
-              yPosition: Math.floor(index / state.widthQuantity) + 1,
-            })
-        ),
+      };
+    }
+    case "setGameSpeed": {
+      if (
+        isNaN(Number(action.payload)) ||
+        (!isNaN(Number(action.payload)) && Number(action.payload) < 0)
+      )
+        return state;
+
+      const newGameSpeed =
+        Number(action.payload) > 0
+          ? Number(action.payload) <= 5
+            ? Number(action.payload)
+            : 5
+          : 1;
+
+      return {
+        ...state,
+        gameSpeed: newGameSpeed,
       };
     }
     case "setIsAlive":
       return {
         ...state,
-        pixels: state.pixels.map((pixel, index) =>
-          index === action.payload
-            ? { ...pixel, isAlive: !pixel.isAlive }
-            : pixel
-        ),
+        alivePixels: state.alivePixels.some(
+          (pixel) =>
+            pixel.xPosition === action.payload.xPosition &&
+            pixel.yPosition === action.payload.yPosition
+        )
+          ? state.alivePixels.filter(
+              (pixel) =>
+                !(
+                  pixel.xPosition === action.payload.xPosition &&
+                  pixel.yPosition === action.payload.yPosition
+                )
+            )
+          : [
+              ...state.alivePixels,
+              {
+                isAlive: true,
+                xPosition: action.payload.xPosition,
+                yPosition: action.payload.yPosition,
+              },
+            ],
       };
     case "resetPixels":
       return {
         ...state,
-        pixels: state.pixels.map((pixel) => {
-          return { ...pixel, isAlive: false };
-        }),
+        alivePixels: [],
         secondsRunning: 0,
         isRunning: false,
       };
     case "resetGame":
       return initialState;
     case "timerTick": {
-      const newPixels = state.pixels.map((primaryPixel, primaryIndex) => {
-        const aliveNeighbours = state.pixels.reduce(
-          (acc, cur, index) =>
-            index === primaryIndex
-              ? acc
-              : cur.xPosition <= primaryPixel.xPosition + 1 &&
-                cur.xPosition >= primaryPixel.xPosition - 1 &&
-                cur.yPosition <= primaryPixel.yPosition + 1 &&
-                cur.yPosition >= primaryPixel.yPosition - 1 &&
-                cur.isAlive
-              ? acc + 1
-              : acc,
-          0
-        );
+      let newAlivePixelListIncludingNeighboursOfAlivePixels = [];
 
-        const pixelNewAliveState =
-          aliveNeighbours === 2
-            ? primaryPixel.isAlive
-            : aliveNeighbours === 3
-            ? true
-            : false;
+      state.alivePixels.forEach((pixel) => {
+        for (let i = 0; i < 9; i++) {
+          if (i !== 4) {
+            const x = pixel.xPosition + (i % 3) - 1;
+            const y = pixel.yPosition + Math.floor(i / 3) - 1;
 
-        return { ...primaryPixel, isAlive: pixelNewAliveState };
+            !newAlivePixelListIncludingNeighboursOfAlivePixels.some(
+              (pixel) => pixel.xPosition === x && pixel.yPosition === y
+            ) &&
+              !state.alivePixels.some(
+                (pixel) => pixel.xPosition === x && pixel.yPosition === y
+              ) &&
+              newAlivePixelListIncludingNeighboursOfAlivePixels.push({
+                isAlive: false,
+                xPosition: x,
+                yPosition: y,
+              });
+          } else {
+            newAlivePixelListIncludingNeighboursOfAlivePixels.push({
+              ...pixel,
+              isAlive: true,
+            });
+          }
+        }
       });
+
+      const newAlivePixels =
+        newAlivePixelListIncludingNeighboursOfAlivePixels.filter(
+          (primaryPixel, primaryIndex) => {
+            const aliveNeighbours =
+              newAlivePixelListIncludingNeighboursOfAlivePixels.reduce(
+                (acc, cur, index) =>
+                  index === primaryIndex
+                    ? acc
+                    : cur.xPosition <= primaryPixel.xPosition + 1 &&
+                      cur.xPosition >= primaryPixel.xPosition - 1 &&
+                      cur.yPosition <= primaryPixel.yPosition + 1 &&
+                      cur.yPosition >= primaryPixel.yPosition - 1 &&
+                      cur.isAlive
+                    ? acc + 1
+                    : acc,
+                0
+              );
+
+            const pixelNewAliveState =
+              aliveNeighbours === 2
+                ? primaryPixel.isAlive
+                : aliveNeighbours === 3
+                ? true
+                : false;
+
+            return pixelNewAliveState;
+          }
+        );
 
       return {
         ...state,
         secondsRunning: state.secondsRunning + 1,
-        pixels: newPixels,
+        alivePixels: newAlivePixels,
       };
     }
     default:
@@ -147,7 +189,14 @@ function reducer(state, action) {
 
 function ConwayGameOfLife() {
   const [
-    { widthQuantity, heightQuantity, isRunning, secondsRunning, pixels },
+    {
+      widthQuantity,
+      heightQuantity,
+      isRunning,
+      secondsRunning,
+      alivePixels,
+      gameSpeed,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -160,73 +209,100 @@ function ConwayGameOfLife() {
         index={index}
         xPosition={(index % widthQuantity) + 1}
         yPosition={Math.floor(index / widthQuantity) + 1}
-        isAlive={pixels[index]?.isAlive}
+        isAlive={alivePixels.some(
+          (anAlivePixel) =>
+            anAlivePixel.xPosition === (index % widthQuantity) + 1 &&
+            anAlivePixel.yPosition === Math.floor(index / widthQuantity) + 1
+        )}
         dispatch={dispatch}
         key={index}
         pixelDimensions={{
-          width: widthQuantity * 3,
-          height: heightQuantity * 3,
+          width: 100 / widthQuantity,
+          height: 100 / heightQuantity,
         }}
       />
     );
   });
 
   return (
-    <ProjectContainer>
-      <h1>Iconic Conways Game of Life done in React</h1>
-      <h4>
-        To play the game, click pixels to turn them alive. Then click the start
-        the game button
-      </h4>
-      <h4>
-        You can also hold down control key and hover over pixels to turn them
-        alive and drag as you wish.
-      </h4>
-      <br />
-      <p>Max width and height is 30</p>
-      <span>Width: </span>
-      <input
-        value={widthQuantity}
-        onChange={(event) =>
-          dispatch({ type: "setWidthQuantity", payload: event.target.value })
-        }
-        disabled={isRunning}
-      />
-      <br />
-      <span>Height: </span>
-      <input
-        value={heightQuantity}
-        onChange={(event) =>
-          dispatch({ type: "setHeightQuantity", payload: event.target.value })
-        }
-        disabled={isRunning}
-      />
-      <br />
-      <br />
-      <button
-        onClick={() => dispatch({ type: "setIsRunning" })}
-        disabled={widthQuantity === 0 || heightQuantity === 0}
-      >
-        {isRunning ? "Pause" : "Start game"}
-      </button>
-      <button onClick={() => dispatch({ type: "resetPixels" })}>
-        Reset pixels
-      </button>
-      <button onClick={() => dispatch({ type: "resetGame" })}>
-        Reset game
-      </button>
-      <Timer
-        dispatch={dispatch}
-        isRunning={isRunning}
-        secondsRunning={secondsRunning}
-      />
-      <GameScreen
-        width={widthQuantity}
-        height={heightQuantity}
-        pixelList={pixelList}
-      />
-      <p>aa</p>
-    </ProjectContainer>
+    <>
+      <NavBar />
+      <ProjectContainer>
+        <h1>Iconic Conways Game of Life done in React</h1>
+        <h4>
+          To play the game, click pixels to turn them alive. Then click the
+          start the game button
+        </h4>
+        <h4>
+          You can also hold down control key and hover over pixels to turn them
+          alive and drag as you wish.
+        </h4>
+        <br />
+        <p>Max width and height is 50</p>
+        <span>Width: </span>
+        <input
+          value={widthQuantity}
+          onChange={(event) =>
+            dispatch({ type: "setWidthQuantity", payload: event.target.value })
+          }
+          disabled={isRunning}
+        />
+        <br />
+        <span>Height: </span>
+        <input
+          value={heightQuantity}
+          onChange={(event) =>
+            dispatch({ type: "setHeightQuantity", payload: event.target.value })
+          }
+          disabled={isRunning}
+        />
+        <br />
+        <br />
+        <button
+          onClick={() => dispatch({ type: "setIsRunning" })}
+          disabled={widthQuantity === 0 || heightQuantity === 0}
+        >
+          {isRunning ? "Pause" : "Start game"}
+        </button>
+        <button onClick={() => dispatch({ type: "resetPixels" })}>
+          Reset pixels
+        </button>
+        <button onClick={() => dispatch({ type: "resetGame" })}>
+          Reset game
+        </button>
+        <br />
+        <br />
+        <p>Game speed multiplier:</p>
+        <button
+          onClick={() =>
+            dispatch({ type: "setGameSpeed", payload: gameSpeed - 1 })
+          }
+          disabled={isRunning || gameSpeed === 1}
+        >
+          -
+        </button>
+        <span>{gameSpeed}</span>
+        <button
+          onClick={() =>
+            dispatch({ type: "setGameSpeed", payload: gameSpeed + 1 })
+          }
+          disabled={isRunning || gameSpeed === 5}
+        >
+          +
+        </button>
+        <Timer
+          dispatch={dispatch}
+          isRunning={isRunning}
+          secondsRunning={secondsRunning}
+          gameSpeed={Math.floor(BASE_GAMESPEED / gameSpeed)}
+        />
+        <GameScreen
+          width={widthQuantity}
+          height={heightQuantity}
+          pixelList={pixelList}
+        />
+      </ProjectContainer>
+    </>
   );
 }
 

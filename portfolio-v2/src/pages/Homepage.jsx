@@ -4,9 +4,9 @@ import "../index.css";
 import DescriptionBox from "../components/BasicCustomComponents/DescriptionBox";
 // import AoE4TargetFireTool from "./AoE4TargetFireTool";
 // import AoE4EconomyBuilder from "../components/AoE4EconomyBuilder/AoE4EconomyBuilder-v2";
-import PortfolioProject from "../components/PortfolioProject";
-import PortfolioProjectCategory from "../components/PortfolioProjectCategory";
-import PortfolioHeader from "../components/PortfolioHeader";
+import PortfolioProject from "../components/BasicCustomComponents/PortfolioProject";
+import PortfolioProjectCategory from "../components/BasicCustomComponents/PortfolioProjectCategory";
+import PortfolioHeader from "../components/BasicCustomComponents/PortfolioHeader";
 import Button from "../components/BasicCustomComponents/Button";
 // import ConwayGameOfLife from "./ConwayGameOfLife";
 
@@ -68,11 +68,10 @@ function Homepage() {
               </DescriptionBox>
             </PortfolioProject>
           )}
-          {/* 
           {(curSelectedPortfolioProject === "" ||
             curSelectedPortfolioProject === "AoE4EconomyBuilder") && (
             <PortfolioProject
-              project={<AoE4EconomyBuilder />}
+              project="/aoe4economybuilder"
               projectName={"AoE4EconomyBuilder"}
               onSetCurSelectedPortfolioProject={
                 handleSetCurSelectedPortfolioProject
@@ -93,7 +92,8 @@ function Homepage() {
                 </p>
               </DescriptionBox>
             </PortfolioProject>
-          )} */}
+          )}
+
           {(curSelectedPortfolioProject === "" ||
             curSelectedPortfolioProject === "Conway's Game of Life") && (
             <PortfolioProject

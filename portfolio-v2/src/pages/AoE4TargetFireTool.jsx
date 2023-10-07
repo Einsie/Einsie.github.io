@@ -24,6 +24,7 @@ import CombatLog from "../components/AoE4TargetFireTool/CombatLog/CombatLog";
 import CurrentArmiesList from "../components/AoE4TargetFireTool/CurrentArmies/CurrentArmiesList";
 import CombatLogEntries from "../components/AoE4TargetFireTool/CombatLog/CombatLogEntries";
 import ProjectContainer from "../components/BasicCustomComponents/ProjectContainer";
+import NavBar from "../components/BasicCustomComponents/NavBar";
 
 // AoE4TargetFireTool is the default function being exported
 export default function AoE4TargetFireTool() {
@@ -120,65 +121,68 @@ export default function AoE4TargetFireTool() {
 
   // return the jsx components with necessary props they need
   return (
-    <ProjectContainer>
-      <SideBar
-        position={"left"}
-        array={presetArmies}
-        onUse={handleSetPresetArmy}
-        onRemove={handleRemovePresetArmy}
-        key={`unitpresets${presetArmies.length}`}
-      >
-        <p>Unit Presets</p>
-      </SideBar>
+    <>
+      <NavBar />
+      <ProjectContainer>
+        <SideBar
+          position={"left"}
+          array={presetArmies}
+          onUse={handleSetPresetArmy}
+          onRemove={handleRemovePresetArmy}
+          key={`unitpresets${presetArmies.length}`}
+        >
+          <p>Unit Presets</p>
+        </SideBar>
 
-      <SideBar
-        position={"right"}
-        array={combatlogHistory}
-        onUse={handleSetCurCombatLog}
-        onRemove={handleRemoveCombatLogFromHistory}
-        key={`combatlogs${combatlogHistory.length}`}
-      >
-        <p>Combat log history</p>
-      </SideBar>
+        <SideBar
+          position={"right"}
+          array={combatlogHistory}
+          onUse={handleSetCurCombatLog}
+          onRemove={handleRemoveCombatLogFromHistory}
+          key={`combatlogs${combatlogHistory.length}`}
+        >
+          <p>Combat log history</p>
+        </SideBar>
 
-      <div className="inliner target-fire-tool">
-        <h1>Age of Empires 4 🏰</h1>
-        <h3>🏹 Target fire comparison tool for ranged armies 🏹</h3>
+        <div className="inliner target-fire-tool">
+          <h1>Age of Empires 4 🏰</h1>
+          <h3>🏹 Target fire comparison tool for ranged armies 🏹</h3>
 
-        {armies.length < 2 && (
-          <AddArmyForm
-            armies={armies}
-            onAddArmy={setArmies}
-            curEditArmy={curEditArmy}
-            onEditCurArmy={setCurEditArmy}
-            presetArmies={presetArmies}
-            onAddPresetArmy={setPresetArmies}
-          />
-        )}
+          {armies.length < 2 && (
+            <AddArmyForm
+              armies={armies}
+              onAddArmy={setArmies}
+              curEditArmy={curEditArmy}
+              onEditCurArmy={setCurEditArmy}
+              presetArmies={presetArmies}
+              onAddPresetArmy={setPresetArmies}
+            />
+          )}
 
-        <CurrentArmies armies={armies} onClearArmy={handleClearArmies}>
-          <CurrentArmiesList armies={armies} onEditArmy={handleEditArmy} />
-        </CurrentArmies>
+          <CurrentArmies armies={armies} onClearArmy={handleClearArmies}>
+            <CurrentArmiesList armies={armies} onEditArmy={handleEditArmy} />
+          </CurrentArmies>
 
-        {armies.length > 0 && (
-          <ArmyComparison
-            armies={armies}
-            onClearArmies={handleClearArmies}
-            curCombatLog={curCombatLog}
-            onSetCurCombatLog={handleSetCurCombatLog}
-          />
-        )}
+          {armies.length > 0 && (
+            <ArmyComparison
+              armies={armies}
+              onClearArmies={handleClearArmies}
+              curCombatLog={curCombatLog}
+              onSetCurCombatLog={handleSetCurCombatLog}
+            />
+          )}
 
-        {curCombatLog.log.length > 0 && (
-          <CombatLog
-            onAddCombatLogToHistory={handleAddCombatLogToHistory}
-            curCombatLog={curCombatLog}
-            onSetCurCombatLog={handleSetCurCombatLog}
-          >
-            <CombatLogEntries curCombatLog={curCombatLog} />
-          </CombatLog>
-        )}
-      </div>
-    </ProjectContainer>
+          {curCombatLog.log.length > 0 && (
+            <CombatLog
+              onAddCombatLogToHistory={handleAddCombatLogToHistory}
+              curCombatLog={curCombatLog}
+              onSetCurCombatLog={handleSetCurCombatLog}
+            >
+              <CombatLogEntries curCombatLog={curCombatLog} />
+            </CombatLog>
+          )}
+        </div>
+      </ProjectContainer>
+    </>
   );
 }
