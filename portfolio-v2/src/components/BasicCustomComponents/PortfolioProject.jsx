@@ -1,29 +1,15 @@
-import { useState } from "react";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 
-export default function PortfolioProject({
-  children,
-  project,
-  projectName,
-  onSetCurSelectedPortfolioProject,
-}) {
-  const [projectIsOpen, setProjectIsOpen] = useState(false);
-
-  function handleOnClick() {
-    setProjectIsOpen((projectIsOpen) => !projectIsOpen);
-    onSetCurSelectedPortfolioProject(!projectIsOpen ? projectName : "");
-  }
-
+export default function PortfolioProject({ children, project, projectName }) {
   return (
     <div style={{ borderStyle: "groove" }}>
-      <Button onClick={handleOnClick} extraStyling={{ marginTop: "5px" }}>
-        <Link to={project}>{projectName}</Link>
+      <Button extraStyling={{ marginTop: "5px" }}>
+        <Link to={project} style={{ textDecoration: "none", color: "white" }}>
+          {projectName}
+        </Link>
       </Button>
-      {
-        /* Conditionally display AoE4TargetFireTool depending on state*/
-        !projectIsOpen && children
-      }
+      {children}
     </div>
   );
 }

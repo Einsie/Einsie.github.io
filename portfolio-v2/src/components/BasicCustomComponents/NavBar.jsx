@@ -1,12 +1,17 @@
 import { NavLink } from "react-router-dom";
 import ProjectContainer from "./ProjectContainer";
+import Button from "./Button";
 
 function NavBar() {
   return (
     <ProjectContainer>
       <ul>
         <li>
-          <NavLink to="/">Home</NavLink>
+          <Button>
+            <NavLink to="/" style={{ textDecoration: "none", color: "white" }}>
+              Home
+            </NavLink>
+          </Button>
         </li>
       </ul>
     </ProjectContainer>
