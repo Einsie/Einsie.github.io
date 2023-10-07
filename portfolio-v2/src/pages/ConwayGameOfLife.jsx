@@ -32,8 +32,8 @@ const initialState = {
 };
 
 const BASE_GAMESPEED = 1000;
-const BASE__URL = "https://einsie.github.io/conwaygameoflife";
-// const BASE__URL = "http://localhost:5173/conwaygameoflife";
+const BASE__URL = "https://einsie.github.io/#/conwaygameoflife";
+// const BASE__URL = "http://localhost:5173/#/conwaygameoflife";
 
 function reducer(state, action) {
   switch (action.type) {
