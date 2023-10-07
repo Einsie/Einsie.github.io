@@ -21,8 +21,8 @@ All other live cells die in the next generation. Similarly, all other dead cells
 */
 
 const initialState = {
-  widthQuantity: 5,
-  heightQuantity: 5,
+  widthQuantity: 10,
+  heightQuantity: 10,
   isRunning: false,
   secondsRunning: 0,
   alivePixels: [],
@@ -66,6 +66,8 @@ function reducer(state, action) {
         queryString: "",
       };
     case "initialiseStateFromQueryString": {
+      if (!action.payload.xPosition.length > 0) return state;
+
       const newAlivePixels = Array.from(
         {
           length: action.payload.xPosition.length,
@@ -313,6 +315,11 @@ function ConwayGameOfLife() {
         <h4 className={styles.urlTextarea}>
           You can also hold down control key and hover over pixels to turn them
           alive and drag as you wish.
+        </h4>
+        <h4>
+          By generating an url after creating shape of your choise, you can use
+          the given URL, to return to APP with your created shape intact. Good
+          for sharing your creation with your friends as well.
         </h4>
         {!isRunning && (
           <>
