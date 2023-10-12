@@ -277,18 +277,16 @@ function ConwayGameOfLife() {
     );
   });
 
-  console.log(pixelList);
-
   useEffect(
     function () {
       const widthParams = searchParams.getAll("width");
       const heightParams = searchParams.getAll("height");
       const xPositionParams =
-        searchParams.getAll("xPosition") === undefined
+        searchParams.getAll("xPosition").length === 0
           ? searchParams.getAll("x")
           : searchParams.getAll("xPosition");
       const yPositionParams =
-        searchParams.getAll("yPosition") === undefined
+        searchParams.getAll("yPosition").length === 0
           ? searchParams.getAll("y")
           : searchParams.getAll("yPosition");
 
