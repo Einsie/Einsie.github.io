@@ -41,20 +41,16 @@ function reducer(state, action) {
       const newQueryString = state.alivePixels.reduce(
         (acc, cur) =>
           acc
-            ? acc +
-              "&xPosition=" +
-              cur.xPosition +
-              "&yPosition=" +
-              cur.yPosition
+            ? acc + "&x=" + cur.xPosition + "&y=" + cur.yPosition
             : BASE__URL +
               acc +
               "?width=" +
               state.widthQuantity +
               "&height=" +
               state.heightQuantity +
-              "&xPosition=" +
+              "&x=" +
               cur.xPosition +
-              "&yPosition=" +
+              "&y=" +
               cur.yPosition,
         ""
       );
@@ -287,8 +283,14 @@ function ConwayGameOfLife() {
     function () {
       const widthParams = searchParams.getAll("width");
       const heightParams = searchParams.getAll("height");
-      const xPositionParams = searchParams.getAll("xPosition");
-      const yPositionParams = searchParams.getAll("yPosition");
+      const xPositionParams =
+        searchParams.getAll("xPosition") === undefined
+          ? searchParams.getAll("x")
+          : searchParams.getAll("xPosition");
+      const yPositionParams =
+        searchParams.getAll("yPosition") === undefined
+          ? searchParams.getAll("y")
+          : searchParams.getAll("yPosition");
 
       dispatch({
         type: "initialiseStateFromQueryString",
