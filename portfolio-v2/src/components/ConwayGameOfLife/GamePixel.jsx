@@ -1,22 +1,25 @@
-function GamePixel({
-  isAlive,
-  dispatch,
-  pixelDimensions,
-  xPosition,
-  yPosition,
-}) {
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+
+function GamePixel({ isAlive, xPosition, yPosition }) {
+  const {
+    widthQuantity: width,
+    heightQuantity: height,
+    dispatch,
+  } = useConwayEngine();
+
   const pixelStyleIsDead = {
     backgroundColor: "white",
-    width: `${pixelDimensions.width}%`,
-    height: `${pixelDimensions.height}%`,
-    marginTop: "-4.8px",
+    width: `${100 / width}%`,
+    paddingTop: `clamp(0.1px, ${height}vh, ${0.01}vw)`,
     display: "inline-block",
   };
   const pixelStyleIsAlive = {
     backgroundColor: "black",
-    width: `${pixelDimensions.width}%`,
-    height: `${pixelDimensions.height}%`,
-    marginTop: "-4.8px",
+    width: `${100 / width}%`,
+    paddingTop: `clamp(0.1px, ${height}vh, ${0.01}vw)`,
+    display: "inline-block",
+  };
+  const spanFillerStyle = {
     display: "inline-block",
   };
 
@@ -37,7 +40,9 @@ function GamePixel({
             })
           : event.preventDefault()
       }
-    />
+    >
+      <span style={spanFillerStyle}></span>
+    </div>
   );
 }
 

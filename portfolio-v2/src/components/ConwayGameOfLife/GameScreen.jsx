@@ -1,12 +1,21 @@
-function GameScreen({ width, height, pixelList }) {
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import GamePixelList from "./GamePixelList";
+
+function GameScreen() {
+  const { widthQuantity } = useConwayEngine();
+
   const GameScreenStyle = {
-    width: `${width * 1.5}vw`,
-    height: `${height * 3}vh`,
+    width: `${widthQuantity}vw`,
+    maxWidth: "80vw",
     margin: "auto",
     marginTop: "5px",
   };
 
-  return <div style={GameScreenStyle}>{pixelList.map((pixel) => pixel)}</div>;
+  return (
+    <div style={GameScreenStyle}>
+      <GamePixelList />
+    </div>
+  );
 }
 
 export default GameScreen;

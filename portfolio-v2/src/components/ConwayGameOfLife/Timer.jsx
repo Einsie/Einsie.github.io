@@ -1,6 +1,9 @@
 import { useEffect } from "react";
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
 
-function Timer({ dispatch, isRunning, secondsRunning, gameSpeed }) {
+function Timer() {
+  const { dispatch, isRunning, secondsRunning, gameSpeed } = useConwayEngine();
+
   const minutes = Math.floor(secondsRunning / 60);
   const seconds = secondsRunning % 60;
 
