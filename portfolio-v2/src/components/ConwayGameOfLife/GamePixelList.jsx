@@ -23,7 +23,7 @@ function GamePixelList() {
             anAlivePixel.xPosition ===
               (index % widthQuantity) + 1 + xPositionOffSet &&
             anAlivePixel.yPosition ===
-              Math.floor(index / widthQuantity) + 1 + yPositionOffSet
+              Math.floor(index / widthQuantity) + 1 - yPositionOffSet
         )}
         key={index}
       />
