@@ -6,7 +6,7 @@ import NavBar from "../components/BasicCustomComponents/NavBar";
 import UrlManager from "../components/ConwayGameOfLife/UrlManager";
 import GameSettings from "../components/ConwayGameOfLife/GameSettings";
 import GameControls from "../components/ConwayGameOfLife/GameControls";
-import { useConwayEngine } from "../contexts/ConwayEngineContext";
+import { useConwayEngine } from "../hooks/useConwayEngine";
 
 /*
 Any live cell with fewer than two live neighbours dies, as if by underpopulation.

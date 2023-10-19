@@ -1,11 +1,11 @@
-import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import { useConwayEngine } from "../../hooks/useConwayEngine";
 import GamePixelList from "./GamePixelList";
 
 function GameScreen() {
   const { widthQuantity } = useConwayEngine();
 
   const GameScreenStyle = {
-    width: `${widthQuantity}vw`,
+    width: `${widthQuantity * 2}vw`,
     maxWidth: "80vw",
     margin: "auto",
     marginTop: "5px",

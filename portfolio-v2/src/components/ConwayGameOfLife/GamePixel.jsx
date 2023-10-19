@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import { useConwayEngine } from "../../hooks/useConwayEngine";
 
 function GamePixel({ isAlive, xPosition, yPosition }) {
   const {

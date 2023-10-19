@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import { useConwayEngine } from "../../hooks/useConwayEngine";
 
 function UrlManager() {
   const { queryString, dispatch, alivePixels } = useConwayEngine();

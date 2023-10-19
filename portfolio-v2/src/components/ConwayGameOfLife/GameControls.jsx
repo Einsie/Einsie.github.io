@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import { useConwayEngine } from "../../hooks/useConwayEngine";
 
 function GameControls() {
   const { widthQuantity, heightQuantity, isRunning, dispatch } =

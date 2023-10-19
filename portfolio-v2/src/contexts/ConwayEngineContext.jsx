@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const ConwayEngineContext = createContext();
@@ -6,17 +6,18 @@ const ConwayEngineContext = createContext();
 const initialState = {
   widthQuantity: 10,
   heightQuantity: 10,
+  xPositionOffSet: 0,
+  yPositionOffSet: 0,
   isRunning: false,
   secondsRunning: 0,
   alivePixels: [],
-  status: "ready",
   gameSpeedMultiplier: 1,
   queryString: "",
 };
 
 const BASE_GAMESPEED = 1000;
-// const BASE__URL = "https://einsie.github.io/#/conwaygameoflife";
-const BASE__URL = "http://localhost:5173/#/conwaygameoflife";
+const BASE__URL = "https://einsie.github.io/#/conwaygameoflife";
+// const BASE__URL = "http://localhost:5173/#/conwaygameoflife";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -78,7 +79,7 @@ function reducer(state, action) {
         return state;
 
       const newWidthQuantity =
-        Number(action.payload) <= 100 ? Number(action.payload) : 100;
+        Number(action.payload) <= 50 ? Math.floor(Number(action.payload)) : 50;
 
       return {
         ...state,
@@ -93,11 +94,41 @@ function reducer(state, action) {
         return state;
 
       const newHeightQuantity =
-        Number(action.payload) <= 100 ? Number(action.payload) : 100;
+        Number(action.payload) <= 50 ? Math.floor(Number(action.payload)) : 50;
 
       return {
         ...state,
         heightQuantity: newHeightQuantity,
+      };
+    }
+    case "setXPositionOffSet": {
+      if (isNaN(Number(action.payload))) return state;
+
+      const newXPositionOffSet =
+        Number(action.payload) > 50
+          ? 50
+          : Number(action.payload) < -50
+          ? -50
+          : Math.floor(Number(action.payload));
+
+      return {
+        ...state,
+        xPositionOffSet: newXPositionOffSet,
+      };
+    }
+    case "setYPositionOffSet": {
+      if (isNaN(Number(action.payload))) return state;
+
+      const newYPositionOffSet =
+        Number(action.payload) > 50
+          ? 50
+          : Number(action.payload) < -50
+          ? -50
+          : Math.floor(Number(action.payload));
+
+      return {
+        ...state,
+        yPositionOffSet: newYPositionOffSet,
       };
     }
     case "setGameSpeed": {
@@ -232,6 +263,8 @@ function ConwayEngineProvider({ children }) {
       alivePixels,
       gameSpeedMultiplier,
       queryString,
+      xPositionOffSet,
+      yPositionOffSet,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -275,6 +308,8 @@ function ConwayEngineProvider({ children }) {
         gameSpeed,
         gameSpeedMultiplier,
         queryString,
+        xPositionOffSet,
+        yPositionOffSet,
 
         dispatch,
       }}
@@ -284,13 +319,4 @@ function ConwayEngineProvider({ children }) {
   );
 }
 
-function useConwayEngine() {
-  const context = useContext(ConwayEngineContext);
-  if (context === undefined)
-    throw new Error(
-      "ConwayEngineContext was used outside ConwayEngineProvider"
-    );
-  return context;
-}
-
-export { ConwayEngineProvider, useConwayEngine };
+export { ConwayEngineProvider, ConwayEngineContext };

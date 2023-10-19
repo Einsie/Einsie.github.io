@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import { useConwayEngine } from "../../hooks/useConwayEngine";
 
 function Timer() {
   const { dispatch, isRunning, secondsRunning, gameSpeed } = useConwayEngine();
