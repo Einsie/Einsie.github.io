@@ -17,7 +17,7 @@ function GamePixelList() {
     return (
       <GamePixel
         xPosition={(index % widthQuantity) + 1 + xPositionOffSet}
-        yPosition={Math.floor(index / widthQuantity) + 1 + yPositionOffSet}
+        yPosition={Math.floor(index / widthQuantity) + 1 - yPositionOffSet}
         isAlive={alivePixels.some(
           (anAlivePixel) =>
             anAlivePixel.xPosition ===
