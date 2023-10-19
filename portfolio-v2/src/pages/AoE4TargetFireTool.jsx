@@ -12,10 +12,6 @@
       but can be used for other RTS with similar mechanics. */
 
 // Import necessary libraries for the component
-import { useState } from "react";
-import { initialPreset } from "../components/AoE4TargetFireTool/InitialVariables/initialPreset";
-import { initialArmy } from "../components/AoE4TargetFireTool/InitialVariables/initialArmy";
-import { initialCombatLog } from "../components/AoE4TargetFireTool/InitialVariables/initialCombatLog";
 import AddArmyForm from "../components/AoE4TargetFireTool/AddArmyForm";
 import ArmyComparison from "../components/AoE4TargetFireTool/ArmyComparison";
 import CurrentArmies from "../components/AoE4TargetFireTool/CurrentArmies/CurrentArmies";
@@ -25,100 +21,12 @@ import CurrentArmiesList from "../components/AoE4TargetFireTool/CurrentArmies/Cu
 import CombatLogEntries from "../components/AoE4TargetFireTool/CombatLog/CombatLogEntries";
 import ProjectContainer from "../components/BasicCustomComponents/ProjectContainer";
 import NavBar from "../components/BasicCustomComponents/NavBar";
+import { useTargetFireTool } from "../hooks/useTargetFireTool";
 
 // AoE4TargetFireTool is the default function being exported
 export default function AoE4TargetFireTool() {
-  //declare the necessary lifted up state variables
-  const [armies, setArmies] = useState([]);
-  const [curEditArmy, setCurEditArmy] = useState(initialArmy);
-  const [presetArmies, setPresetArmies] = useState(initialPreset);
-  const [combatlogHistory, setCombatLogHistory] = useState([]);
-  const [curCombatLog, setCurCombatLog] = useState(initialCombatLog);
-
-  //add handler functions being passed on to children
-
-  // handleRemoveArmy removes an army from armies list and updates
-  //    the id of remaining armies using index
-  function handleRemoveArmy(oldArmy) {
-    setArmies(
-      armies
-        .filter((army) => army.id !== oldArmy.id)
-        .map((army, index) =>
-          army.id !== index ? { ...army, id: index } : army
-        )
-    );
-  }
-
-  // handleClearArmies clears the armies state to default
-  function handleClearArmies() {
-    setArmies([]);
-  }
-
-  // handleEditArmy removes the army about to be edited from armies list
-  //    and sets it as new army being edited in the form.
-  // length of armies is still 2 at this point despite an army been removed
-  //    from it
-  function handleEditArmy(army) {
-    handleRemoveArmy(army);
-    armies.length < 3 && setCurEditArmy(army);
-  }
-
-  // handleSetPresetArmy sets the chosen presetArmy as the new currently
-  //    edited army in the form if armies state doesn't already have 2 in it
-  function handleSetPresetArmy(army) {
-    armies.length < 2 && setCurEditArmy(army);
-  }
-
-  // handleRemovePresetArmy removes the preset army from its list
-  //    and updates the id of the remaining presets using their index
-  function handleRemovePresetArmy(army) {
-    setPresetArmies(
-      presetArmies
-        .filter((presetArmy) => presetArmy.id !== army.id)
-        .map((presetArmy, index) =>
-          presetArmy.id !== index ? { ...presetArmy, id: index } : presetArmy
-        )
-    );
-  }
-
-  // handleAddCombatLogToHistory adds a combat log to history
-  //    if its trueId does not already exist in it, while
-  //    also updating its id at appropriate index
-  function handleAddCombatLogToHistory(combatLog) {
-    if (
-      combatlogHistory.length > 0 &&
-      combatlogHistory.reduce(
-        (accumulator, curLog) =>
-          curLog.trueId === combatLog.trueId || accumulator,
-        false
-      )
-    )
-      return;
-    combatLog.id = combatlogHistory.length;
-    setCombatLogHistory((combatlogHistory) => [...combatlogHistory, combatLog]);
-  }
-
-  // handleSetCurCombatLog sets the currently displayed combat log to
-  //    the desired combatLog
-  function handleSetCurCombatLog(combatLog) {
-    setCurCombatLog(combatLog);
-  }
-
-  // handleRemoveCombatLogFromHistory removes the desired combat log from its history
-  //    list while also updating the id of remaining combatlogs
-  //    in the appropriate array index of [0]
-  function handleRemoveCombatLogFromHistory(combatLog) {
-    setCombatLogHistory((combatlogHistory) =>
-      combatlogHistory
-        .filter((curCombatLog) => curCombatLog.id !== combatLog.id)
-        .map((curCombatLog, curCombatLogIndex) =>
-          curCombatLog.id !== curCombatLogIndex
-            ? { ...curCombatLog, id: curCombatLogIndex }
-            : curCombatLog
-        )
-    );
-  }
-
+  const { presetArmies, combatlogHistory, curCombatLog, armies, dispatch } =
+    useTargetFireTool();
   // return the jsx components with necessary props they need
   return (
     <>
@@ -127,8 +35,9 @@ export default function AoE4TargetFireTool() {
         <SideBar
           position={"left"}
           array={presetArmies}
-          onUse={handleSetPresetArmy}
-          onRemove={handleRemovePresetArmy}
+          onUse={"curEditArmy/use/preset"}
+          onRemove={"preset/remove"}
+          dispatch={dispatch}
           key={`unitpresets${presetArmies.length}`}
         >
           <p>Unit Presets</p>
@@ -137,8 +46,9 @@ export default function AoE4TargetFireTool() {
         <SideBar
           position={"right"}
           array={combatlogHistory}
-          onUse={handleSetCurCombatLog}
-          onRemove={handleRemoveCombatLogFromHistory}
+          onUse={"curCombatLog/set"}
+          onRemove={"combatLogHistory/remove"}
+          dispatch={dispatch}
           key={`combatlogs${combatlogHistory.length}`}
         >
           <p>Combat log history</p>
@@ -148,37 +58,17 @@ export default function AoE4TargetFireTool() {
           <h1>Age of Empires 4 🏰</h1>
           <h3>🏹 Target fire comparison tool for ranged armies 🏹</h3>
 
-          {armies.length < 2 && (
-            <AddArmyForm
-              armies={armies}
-              onAddArmy={setArmies}
-              curEditArmy={curEditArmy}
-              onEditCurArmy={setCurEditArmy}
-              presetArmies={presetArmies}
-              onAddPresetArmy={setPresetArmies}
-            />
-          )}
+          {armies.length < 2 && <AddArmyForm />}
 
-          <CurrentArmies armies={armies} onClearArmy={handleClearArmies}>
-            <CurrentArmiesList armies={armies} onEditArmy={handleEditArmy} />
+          <CurrentArmies>
+            <CurrentArmiesList />
           </CurrentArmies>
 
-          {armies.length > 0 && (
-            <ArmyComparison
-              armies={armies}
-              onClearArmies={handleClearArmies}
-              curCombatLog={curCombatLog}
-              onSetCurCombatLog={handleSetCurCombatLog}
-            />
-          )}
+          {armies.length > 0 && <ArmyComparison />}
 
           {curCombatLog.log.length > 0 && (
-            <CombatLog
-              onAddCombatLogToHistory={handleAddCombatLogToHistory}
-              curCombatLog={curCombatLog}
-              onSetCurCombatLog={handleSetCurCombatLog}
-            >
-              <CombatLogEntries curCombatLog={curCombatLog} />
+            <CombatLog>
+              <CombatLogEntries />
             </CombatLog>
           )}
         </div>

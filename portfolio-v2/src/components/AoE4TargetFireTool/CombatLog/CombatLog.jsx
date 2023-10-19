@@ -9,15 +9,12 @@
 import { useState } from "react";
 import Button from "../../BasicCustomComponents/Button";
 import { initialCombatLog } from "../InitialVariables/initialCombatLog";
+import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
 
 // CombatLog is the default function being exported from the component
 //    destructure the prop for necessary parameters
-export default function CombatLog({
-  children,
-  onAddCombatLogToHistory,
-  curCombatLog,
-  onSetCurCombatLog,
-}) {
+export default function CombatLog({ children }) {
+  const { curCombatLog, dispatch } = useTargetFireTool();
   const [combatHistoryIsOpen, setCombatHistoryIsOpen] = useState(true);
 
   return (
@@ -25,10 +22,18 @@ export default function CombatLog({
       <Button onClick={() => setCombatHistoryIsOpen(!combatHistoryIsOpen)}>
         {combatHistoryIsOpen ? "Close combat log" : "Open combat log"}
       </Button>
-      <Button onClick={() => onAddCombatLogToHistory(curCombatLog)}>
+      <Button
+        onClick={() =>
+          dispatch({ type: "combatLogHistory/add", payload: curCombatLog })
+        }
+      >
         Add this combat log to history
       </Button>
-      <Button onClick={() => onSetCurCombatLog(initialCombatLog)}>
+      <Button
+        onClick={() =>
+          dispatch({ type: "curCombatLog/set", payload: initialCombatLog })
+        }
+      >
         Clear current combat log
       </Button>
 

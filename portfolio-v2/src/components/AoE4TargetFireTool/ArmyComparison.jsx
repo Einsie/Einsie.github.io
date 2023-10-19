@@ -6,10 +6,12 @@
 // Import necessary libraries for the component
 import { useState } from "react";
 import Button from "../BasicCustomComponents/Button";
+import { useTargetFireTool } from "../../hooks/useTargetFireTool";
 
 //ArmyComparison is the default function being exported from the component
 //  destructure the prop for necessary parameters
-export default function ArmyComparison({ armies, onSetCurCombatLog }) {
+export default function ArmyComparison() {
+  const { armies, dispatch } = useTargetFireTool();
   // Declare local a state variable to hold the winner through re-renders
   const [winner, setWinner] = useState([{ id: false }]);
 
@@ -39,7 +41,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
   function handleCalculateWinner() {
     // Initialising variables in case they weren't cleared first
     setWinner([{ id: false }]);
-    onSetCurCombatLog([]);
+    dispatch({ type: "curCombatLog/set", payload: [] });
     // Initialise the temporary combat log with id, trueID,
     //    winner name and quantity, loser name and quantity
     //    for later defining at pre-determined indexes
@@ -262,7 +264,7 @@ export default function ArmyComparison({ armies, onSetCurCombatLog }) {
     //    stored inside parameters through the process
     function setNewWinner(newWinner, curLog) {
       setWinner(newWinner);
-      onSetCurCombatLog(curLog);
+      dispatch({ type: "curCombatLog/set", payload: curLog });
     }
 
     /* This function handles dealing the damage between armies

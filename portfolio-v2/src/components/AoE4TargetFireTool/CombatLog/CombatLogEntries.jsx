@@ -1,6 +1,8 @@
+import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
 import CombatLogEntry from "./CombatLogEntry";
 
-export default function CombatLogEntries({ curCombatLog }) {
+export default function CombatLogEntries() {
+  const { curCombatLog } = useTargetFireTool();
   return (
     <ul>
       <CombatLogEntry curLog={curCombatLog.name} />

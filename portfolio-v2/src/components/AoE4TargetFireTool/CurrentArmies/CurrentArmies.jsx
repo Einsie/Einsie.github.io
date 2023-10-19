@@ -3,11 +3,13 @@
       the content accordingly */
 
 // Import necessary libraries for the component
+import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
 import Button from "../../BasicCustomComponents/Button";
 
 // ArmiesList is the default function of the component being exported
 //    destructure the propr for necessary parameters
-export default function CurrentArmies({ children, armies, onClearArmy }) {
+export default function CurrentArmies({ children }) {
+  const { armies, dispatch } = useTargetFireTool();
   return (
     <div className="tool-component">
       {armies.length > 0 ? (
@@ -17,7 +19,9 @@ export default function CurrentArmies({ children, armies, onClearArmy }) {
           {armies.length === 1 && (
             <p>Add a second army and you&apos;re ready to go!</p>
           )}
-          <Button onClick={onClearArmy}>Clear</Button>
+          <Button onClick={() => dispatch({ type: "armies/clear" })}>
+            Clear
+          </Button>
         </>
       ) : (
         <p> Begin by adding your two armies to compare!</p>

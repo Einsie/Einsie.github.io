@@ -15,6 +15,7 @@ export default function SideBar({
   array,
   onUse,
   onRemove,
+  dispatch,
 }) {
   // Declare local  instance state variables for the component
   //    to control the input and select elements
@@ -72,6 +73,7 @@ export default function SideBar({
       {sortBySearch.length > 0 ? (
         <SideBarList
           sortedList={sortedList}
+          dispatch={dispatch}
           onUse={onUse}
           onRemove={onRemove}
         />

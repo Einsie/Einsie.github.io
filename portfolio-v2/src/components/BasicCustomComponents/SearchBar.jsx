@@ -25,11 +25,12 @@ export default function SearchBar({
 
     // The match returns a null element if no matches were found
     //    Using this to advantage in filter by checking if not null
-    onSetSortedList(
-      inputValue.length > 0 && newList.length === defaultArray.length
-        ? []
-        : newList
-    );
+    // onSetSortedList(
+    //   inputValue.length > 0 && newList.length === defaultArray.length
+    //     ? []
+    //     : newList
+    // );
+    onSetSortedList(newList);
   }
 
   /* The following is the search bar, using controlled input element */

@@ -1,7 +1,7 @@
 import SideBarListItem from "./SideBarListItem";
 import Button from "../../BasicCustomComponents/Button";
 
-export default function SideBarList({ sortedList, onUse, onRemove }) {
+export default function SideBarList({ sortedList, onUse, onRemove, dispatch }) {
   return (
     <ul>
       {
@@ -11,8 +11,16 @@ export default function SideBarList({ sortedList, onUse, onRemove }) {
         sortedList?.map((curItem, index) => (
           <SideBarListItem curItem={curItem} key={index}>
             <div>
-              <Button onClick={() => onUse(curItem)}>Use</Button>
-              <Button onClick={() => onRemove(curItem)}>Remove</Button>
+              <Button
+                onClick={() => dispatch({ type: onUse, payload: curItem })}
+              >
+                Use
+              </Button>
+              <Button
+                onClick={() => dispatch({ type: onRemove, payload: curItem })}
+              >
+                Remove
+              </Button>
             </div>
           </SideBarListItem>
         ))
