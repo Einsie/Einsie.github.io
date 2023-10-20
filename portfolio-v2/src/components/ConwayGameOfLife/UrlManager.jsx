@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../hooks/useConwayEngine";
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
 
 function UrlManager() {
   const { queryString, dispatch, alivePixels } = useConwayEngine();
@@ -11,13 +11,13 @@ function UrlManager() {
         </>
       )}{" "}
       <button
-        onClick={() => dispatch({ type: "setQueryString" })}
+        onClick={() => dispatch({ type: "queryString/set" })}
         disabled={!alivePixels.length > 0}
       >
         generate URL
       </button>
       <button
-        onClick={() => dispatch({ type: "clearQueryString" })}
+        onClick={() => dispatch({ type: "queryString/clear" })}
         disabled={!queryString}
       >
         clear URL

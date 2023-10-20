@@ -21,7 +21,7 @@ import CurrentArmiesList from "../components/AoE4TargetFireTool/CurrentArmies/Cu
 import CombatLogEntries from "../components/AoE4TargetFireTool/CombatLog/CombatLogEntries";
 import ProjectContainer from "../components/BasicCustomComponents/ProjectContainer";
 import NavBar from "../components/BasicCustomComponents/NavBar";
-import { useTargetFireTool } from "../hooks/useTargetFireTool";
+import { useTargetFireTool } from "../contexts/TargetFireToolContext";
 
 // AoE4TargetFireTool is the default function being exported
 export default function AoE4TargetFireTool() {

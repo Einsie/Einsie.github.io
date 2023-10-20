@@ -5,7 +5,7 @@
 import Button from "../BasicCustomComponents/Button";
 import TextInput from "../BasicCustomComponents/TextInput";
 import DescriptionBox from "../BasicCustomComponents/DescriptionBox";
-import { useTargetFireTool } from "../../hooks/useTargetFireTool";
+import { useTargetFireTool } from "../../contexts/TargetFireToolContext";
 
 //AddArmyForm is the default function being exported by the component
 //destructure the prop into necessary parameters being used

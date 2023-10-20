@@ -9,7 +9,7 @@
 import { useState } from "react";
 import Button from "../../BasicCustomComponents/Button";
 import { initialCombatLog } from "../InitialVariables/initialCombatLog";
-import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
+import { useTargetFireTool } from "../../../contexts/TargetFireToolContext";
 
 // CombatLog is the default function being exported from the component
 //    destructure the prop for necessary parameters

@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../hooks/useConwayEngine";
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
 
 function GameSettings() {
   const {
@@ -16,7 +16,7 @@ function GameSettings() {
       <span>Width: </span>
       <button
         onClick={() =>
-          dispatch({ type: "setWidthQuantity", payload: widthQuantity - 1 })
+          dispatch({ type: "widthQuantity/set", payload: widthQuantity - 1 })
         }
       >
         -
@@ -25,14 +25,14 @@ function GameSettings() {
         value={widthQuantity}
         onChange={(event) =>
           dispatch({
-            type: "setWidthQuantity",
+            type: "widthQuantity/set",
             payload: event.target.value,
           })
         }
       />
       <button
         onClick={() =>
-          dispatch({ type: "setWidthQuantity", payload: widthQuantity + 1 })
+          dispatch({ type: "widthQuantity/set", payload: widthQuantity + 1 })
         }
       >
         +
@@ -41,7 +41,7 @@ function GameSettings() {
       <span>Height: </span>
       <button
         onClick={() =>
-          dispatch({ type: "setHeightQuantity", payload: widthQuantity - 1 })
+          dispatch({ type: "heightQuantity/set", payload: heightQuantity - 1 })
         }
       >
         -
@@ -50,14 +50,14 @@ function GameSettings() {
         value={heightQuantity}
         onChange={(event) =>
           dispatch({
-            type: "setHeightQuantity",
+            type: "heightQuantity/set",
             payload: event.target.value,
           })
         }
       />
       <button
         onClick={() =>
-          dispatch({ type: "setHeightQuantity", payload: widthQuantity + 1 })
+          dispatch({ type: "heightQuantity/set", payload: heightQuantity + 1 })
         }
       >
         +
@@ -66,7 +66,10 @@ function GameSettings() {
       <span>x-position offset: </span>
       <button
         onClick={() =>
-          dispatch({ type: "setXPositionOffSet", payload: xPositionOffSet - 1 })
+          dispatch({
+            type: "xPositionOffSet/set",
+            payload: xPositionOffSet - 1,
+          })
         }
       >
         -
@@ -75,14 +78,17 @@ function GameSettings() {
         value={xPositionOffSet}
         onChange={(event) =>
           dispatch({
-            type: "setXPositionOffSet",
+            type: "xPositionOffSet/set",
             payload: event.target.value,
           })
         }
       />
       <button
         onClick={() =>
-          dispatch({ type: "setXPositionOffSet", payload: xPositionOffSet + 1 })
+          dispatch({
+            type: "xPositionOffSet/set",
+            payload: xPositionOffSet + 1,
+          })
         }
       >
         +
@@ -91,7 +97,10 @@ function GameSettings() {
       <span>y-position offset: </span>
       <button
         onClick={() =>
-          dispatch({ type: "setYPositionOffSet", payload: yPositionOffSet - 1 })
+          dispatch({
+            type: "yPositionOffSet/set",
+            payload: yPositionOffSet - 1,
+          })
         }
       >
         -
@@ -100,14 +109,17 @@ function GameSettings() {
         value={yPositionOffSet}
         onChange={(event) =>
           dispatch({
-            type: "setYPositionOffSet",
+            type: "yPositionOffSet/set",
             payload: event.target.value,
           })
         }
       />
       <button
         onClick={() =>
-          dispatch({ type: "setYPositionOffSet", payload: yPositionOffSet + 1 })
+          dispatch({
+            type: "yPositionOffSet/set",
+            payload: yPositionOffSet + 1,
+          })
         }
       >
         +
@@ -115,7 +127,7 @@ function GameSettings() {
       <p>Game speed multiplier:</p>
       <button
         onClick={() =>
-          dispatch({ type: "setGameSpeed", payload: gameSpeedMultiplier - 1 })
+          dispatch({ type: "gameSpeed/set", payload: gameSpeedMultiplier - 1 })
         }
         disabled={gameSpeedMultiplier === 1}
       >
@@ -124,7 +136,7 @@ function GameSettings() {
       <span>{gameSpeedMultiplier}</span>
       <button
         onClick={() =>
-          dispatch({ type: "setGameSpeed", payload: gameSpeedMultiplier + 1 })
+          dispatch({ type: "gameSpeed/set", payload: gameSpeedMultiplier + 1 })
         }
         disabled={gameSpeedMultiplier === 5}
       >

@@ -3,7 +3,7 @@
       the content accordingly */
 
 // Import necessary libraries for the component
-import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
+import { useTargetFireTool } from "../../../contexts/TargetFireToolContext";
 import Button from "../../BasicCustomComponents/Button";
 
 // ArmiesList is the default function of the component being exported

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const ConwayEngineContext = createContext();
@@ -21,7 +21,7 @@ const BASE__URL = "https://einsie.github.io/#/conwaygameoflife";
 
 function reducer(state, action) {
   switch (action.type) {
-    case "setQueryString": {
+    case "queryString/set": {
       const newQueryString = state.alivePixels.reduce(
         (acc, cur) =>
           acc
@@ -40,12 +40,12 @@ function reducer(state, action) {
       );
       return { ...state, queryString: newQueryString };
     }
-    case "clearQueryString":
+    case "queryString/clear":
       return {
         ...state,
         queryString: "",
       };
-    case "initialiseStateFromQueryString": {
+    case "queryString/initialise": {
       if (!action.payload.xPosition.length > 0) return state;
 
       const newAlivePixels = Array.from(
@@ -66,12 +66,12 @@ function reducer(state, action) {
         alivePixels: newAlivePixels,
       };
     }
-    case "setIsRunning":
+    case "isRunning/set":
       return {
         ...state,
         isRunning: !state.isRunning,
       };
-    case "setWidthQuantity": {
+    case "widthQuantity/set": {
       if (
         isNaN(Number(action.payload)) ||
         (!isNaN(Number(action.payload)) && Number(action.payload) < 0)
@@ -86,7 +86,7 @@ function reducer(state, action) {
         widthQuantity: newWidthQuantity,
       };
     }
-    case "setHeightQuantity": {
+    case "heightQuantity/set": {
       if (
         isNaN(Number(action.payload)) ||
         (!isNaN(Number(action.payload)) && Number(action.payload) < 0)
@@ -101,7 +101,7 @@ function reducer(state, action) {
         heightQuantity: newHeightQuantity,
       };
     }
-    case "setXPositionOffSet": {
+    case "xPositionOffSet/set": {
       if (isNaN(Number(action.payload))) return state;
 
       const newXPositionOffSet =
@@ -116,7 +116,7 @@ function reducer(state, action) {
         xPositionOffSet: newXPositionOffSet,
       };
     }
-    case "setYPositionOffSet": {
+    case "yPositionOffSet/set": {
       if (isNaN(Number(action.payload))) return state;
 
       const newYPositionOffSet =
@@ -131,7 +131,7 @@ function reducer(state, action) {
         yPositionOffSet: newYPositionOffSet,
       };
     }
-    case "setGameSpeed": {
+    case "gameSpeed/set": {
       if (
         isNaN(Number(action.payload)) ||
         (!isNaN(Number(action.payload)) && Number(action.payload) < 0)
@@ -150,7 +150,7 @@ function reducer(state, action) {
         gameSpeedMultiplier: newGameSpeedMultiplier,
       };
     }
-    case "setIsAlive":
+    case "isAlive/set":
       return {
         ...state,
         alivePixels: state.alivePixels.some(
@@ -174,16 +174,16 @@ function reducer(state, action) {
               },
             ],
       };
-    case "resetPixels":
+    case "alivePixels/reset":
       return {
         ...state,
         alivePixels: [],
         secondsRunning: 0,
         isRunning: false,
       };
-    case "resetGame":
+    case "game/reset":
       return initialState;
-    case "timerTick": {
+    case "game/update": {
       let newAlivePixelListIncludingNeighboursOfAlivePixels = [];
 
       state.alivePixels.forEach((pixel) => {
@@ -285,7 +285,7 @@ function ConwayEngineProvider({ children }) {
           : searchParams.getAll("yPosition");
 
       dispatch({
-        type: "initialiseStateFromQueryString",
+        type: "queryString/initialise",
         payload: {
           width: widthParams,
           height: heightParams,
@@ -319,4 +319,13 @@ function ConwayEngineProvider({ children }) {
   );
 }
 
-export { ConwayEngineProvider, ConwayEngineContext };
+function useConwayEngine() {
+  const context = useContext(ConwayEngineContext);
+  if (context === undefined)
+    throw new Error(
+      "ConwayEngineContext was used outside ConwayEngineProvider"
+    );
+  return context;
+}
+
+export { ConwayEngineProvider, useConwayEngine };

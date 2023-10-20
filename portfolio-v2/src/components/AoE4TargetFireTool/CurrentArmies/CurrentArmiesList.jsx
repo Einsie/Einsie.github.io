@@ -1,4 +1,4 @@
-import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
+import { useTargetFireTool } from "../../../contexts/TargetFireToolContext";
 import Button from "../../BasicCustomComponents/Button";
 import CurrentArmiesListItem from "./CurrentArmiesListItem";
 

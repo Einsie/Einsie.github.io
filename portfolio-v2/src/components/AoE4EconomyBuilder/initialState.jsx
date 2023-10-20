@@ -63,7 +63,7 @@
   recordOfSavedSteps: [],
 }; */
 
-export const initialValues = {
+export const initialState = {
   buildName: "presetMongol",
   curStep: 0,
   savedSteps: [],

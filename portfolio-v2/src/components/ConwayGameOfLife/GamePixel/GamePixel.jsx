@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../hooks/useConwayEngine";
+import { useConwayEngine } from "../../../contexts/ConwayEngineContext";
 
 function GamePixel({ isAlive, xPosition, yPosition }) {
   const {
@@ -28,14 +28,14 @@ function GamePixel({ isAlive, xPosition, yPosition }) {
       style={isAlive ? pixelStyleIsAlive : pixelStyleIsDead}
       onClick={() =>
         dispatch({
-          type: "setIsAlive",
+          type: "isAlive/set",
           payload: { xPosition: xPosition, yPosition: yPosition },
         })
       }
       onMouseOver={(event) =>
         event.ctrlKey
           ? dispatch({
-              type: "setIsAlive",
+              type: "isAlive/set",
               payload: { xPosition: xPosition, yPosition: yPosition },
             })
           : event.preventDefault()

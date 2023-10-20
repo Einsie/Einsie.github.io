@@ -1,5 +1,5 @@
-import { useConwayEngine } from "../../hooks/useConwayEngine";
-import GamePixelList from "./GamePixelList";
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
+import GamePixelList from "./GamePixel/GamePixelList";
 
 function GameScreen() {
   const { widthQuantity } = useConwayEngine();

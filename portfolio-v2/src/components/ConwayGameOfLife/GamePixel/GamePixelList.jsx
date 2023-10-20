@@ -1,4 +1,4 @@
-import { useConwayEngine } from "../../hooks/useConwayEngine";
+import { useConwayEngine } from "../../../contexts/ConwayEngineContext";
 import GamePixel from "./GamePixel";
 
 function GamePixelList() {

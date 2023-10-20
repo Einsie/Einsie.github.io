@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useConwayEngine } from "../../hooks/useConwayEngine";
+import { useConwayEngine } from "../../contexts/ConwayEngineContext";
 
 function Timer() {
   const { dispatch, isRunning, secondsRunning, gameSpeed } = useConwayEngine();
@@ -10,7 +10,7 @@ function Timer() {
   useEffect(
     function () {
       const id = setInterval(function () {
-        dispatch({ type: "timerTick" });
+        dispatch({ type: "game/update" });
       }, gameSpeed);
 
       if (!isRunning) clearInterval(id);

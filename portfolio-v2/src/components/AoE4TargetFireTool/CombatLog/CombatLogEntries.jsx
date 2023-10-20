@@ -1,4 +1,4 @@
-import { useTargetFireTool } from "../../../hooks/useTargetFireTool";
+import { useTargetFireTool } from "../../../contexts/TargetFireToolContext";
 import CombatLogEntry from "./CombatLogEntry";
 
 export default function CombatLogEntries() {

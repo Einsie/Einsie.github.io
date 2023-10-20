@@ -4,97 +4,19 @@ Component purpose:
 */
 
 // Import necessary libraries for the component
-import { useReducer } from "react";
 import SelectOptionInput from "../components/BasicCustomComponents/SelectOptionInput";
 import Button from "../components/BasicCustomComponents/Button";
 import Header from "../components/AoE4EconomyBuilder/Header";
 import AddGoal from "../components/AoE4EconomyBuilder/AddGoal";
-import { initialValues } from "../components/AoE4EconomyBuilder/initialValues";
 import ProjectContainer from "../components/BasicCustomComponents/ProjectContainer";
 import NavBar from "../components/BasicCustomComponents/NavBar";
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "setGoalType": {
-      const isGoalTypeAlsoName =
-        action.payload !== "No goal" &&
-        action.payload !== "Other building" &&
-        action.payload !== "Unit" &&
-        action.payload !== "Technology";
-
-      return {
-        ...state,
-        goalType: action.payload,
-        goalName: isGoalTypeAlsoName ? action.payload : null,
-      };
-    }
-    case "setGoalName":
-      return {
-        ...state,
-        goalName: action.payload.length > 0 ? action.payload : null,
-      };
-    case "setGoalFood":
-      return {
-        ...state,
-        goalFood: action.payload > 0 ? action.payload : null,
-      };
-    case "setGoalWood":
-      return {
-        ...state,
-        goalWood: action.payload > 0 ? action.payload : null,
-      };
-    case "setGoalGold":
-      return {
-        ...state,
-        goalGold: action.payload > 0 ? action.payload : null,
-      };
-    case "setGoalStone":
-      return {
-        ...state,
-        goalStone: action.payload > 0 ? action.payload : null,
-      };
-    case "goalAccepted":
-      action.payload.preventDefault();
-
-      if (!state.goalName) return state;
-
-      return {
-        ...state,
-        curFood: state.curFood - state.goalFood,
-        goalFood: null,
-        curWood: state.curWood - state.goalWood,
-        goalWood: null,
-        curGold: state.curGold - state.goalGold,
-        goalGold: null,
-        curStone: state.curStone - state.goalStone,
-        goalStone: null,
-        goalName: null,
-        goalType: "No goal",
-        timer: state.timer + 20,
-        curStep: state.curStep + 1,
-      };
-    case "switchStep":
-      return {
-        ...state.savedSteps[action.payload.target.value - 1],
-        savedSteps: state.savedSteps,
-      };
-    case "saveStep":
-      return {
-        ...state,
-        savedSteps: [...state.savedSteps, { ...state, savedSteps: [] }],
-      };
-    case "clearSteps":
-      return initialValues;
-    default:
-      throw new Error("Unknown reducer command");
-  }
-}
+import { useEconomyBuilder } from "../contexts/EconomyBuilderContext";
 
 // AoE4TargetFireTool is the default function being exported
 
 export default function AoE4EconomyBuilder() {
   //declare the necessary lifted up state variables
-  const [state, dispatch] = useReducer(reducer, initialValues);
+  const { state, dispatch } = useEconomyBuilder();
 
   // return the jsx components with necessary props they need
   return (

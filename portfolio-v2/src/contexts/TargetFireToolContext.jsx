@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 
 import { initialArmy } from "../components/AoE4TargetFireTool/InitialVariables/initialArmy";
 import { initialPreset } from "../components/AoE4TargetFireTool/InitialVariables/initialPreset";
@@ -275,4 +275,14 @@ function TargetFireToolProvider({ children }) {
   );
 }
 
-export { TargetFireToolProvider, TargetFireToolContext };
+function useTargetFireTool() {
+  const context = useContext(TargetFireToolContext);
+  if (TargetFireToolContext === undefined)
+    throw new Error(
+      "TargetFireToolContext used outside TargetFireToolProvider"
+    );
+
+  return context;
+}
+
+export { TargetFireToolProvider, useTargetFireTool };
