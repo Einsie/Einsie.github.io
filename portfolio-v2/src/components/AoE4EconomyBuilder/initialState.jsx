@@ -1,3 +1,22 @@
+export const initialState = {
+  buildName: "presetMongol",
+  curStep: 0,
+  savedSteps: [],
+  timer: 0,
+
+  curFood: 200,
+  curWood: 150,
+  curGold: 100,
+  curStone: 0,
+
+  goalType: "No goal",
+  goalName: null,
+  goalFood: null,
+  goalWood: null,
+  goalGold: null,
+  goalStone: null,
+};
+
 /* export const exampleValues = {
   buildName: "presetMongol",
   currentStep: 1,
@@ -62,22 +81,3 @@
   productionQueuesActiveDock: 0,
   recordOfSavedSteps: [],
 }; */
-
-export const initialState = {
-  buildName: "presetMongol",
-  curStep: 0,
-  savedSteps: [],
-  timer: 0,
-
-  curFood: 200,
-  curWood: 150,
-  curGold: 100,
-  curStone: 0,
-
-  goalType: "No goal",
-  goalName: null,
-  goalFood: null,
-  goalWood: null,
-  goalGold: null,
-  goalStone: null,
-};

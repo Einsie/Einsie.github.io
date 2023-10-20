@@ -6,8 +6,8 @@ const ConwayEngineContext = createContext();
 const initialState = {
   widthQuantity: 10,
   heightQuantity: 10,
-  xPositionOffSet: 0,
-  yPositionOffSet: 0,
+  xPositionOffset: 0,
+  yPositionOffset: 0,
   isRunning: false,
   secondsRunning: 0,
   alivePixels: [],
@@ -32,6 +32,12 @@ function reducer(state, action) {
               state.widthQuantity +
               "&height=" +
               state.heightQuantity +
+              "&yoffset=" +
+              state.yPositionOffset +
+              "&xoffset=" +
+              state.xPositionOffset +
+              "&gamespdmult=" +
+              state.gameSpeedMultiplier +
               "&x=" +
               cur.xPosition +
               "&y=" +
@@ -61,8 +67,36 @@ function reducer(state, action) {
       );
       return {
         ...state,
-        widthQuantity: Number(action.payload.width),
-        heightQuantity: Number(action.payload.height),
+        widthQuantity:
+          Number(action.payload.width) > 50
+            ? 50
+            : Number(action.payload.width) < -50
+            ? -50
+            : Number(action.payload.width),
+        heightQuantity:
+          Number(action.payload.height) > 50
+            ? 50
+            : Number(action.payload.height) < -50
+            ? -50
+            : Number(action.payload.height),
+        yPositionOffset:
+          Number(action.payload.yOffset) > 50
+            ? 50
+            : Number(action.payload.yOffset) < -50
+            ? -50
+            : Number(action.payload.yOffset),
+        xPositionOffset:
+          Number(action.payload.xOffset) > 50
+            ? 50
+            : Number(action.payload.xOffset) < -50
+            ? -50
+            : Number(action.payload.xOffset),
+        gameSpeedMultiplier:
+          Number(action.payload.gameSpeedMultiplier) > 5
+            ? 5
+            : Number(action.payload.gameSpeedMultiplier) < 1
+            ? 1
+            : Number(action.payload.gameSpeedMultiplier),
         alivePixels: newAlivePixels,
       };
     }
@@ -101,10 +135,10 @@ function reducer(state, action) {
         heightQuantity: newHeightQuantity,
       };
     }
-    case "xPositionOffSet/set": {
+    case "xPositionOffset/set": {
       if (isNaN(Number(action.payload))) return state;
 
-      const newXPositionOffSet =
+      const newXPositionOffset =
         Number(action.payload) > 50
           ? 50
           : Number(action.payload) < -50
@@ -113,13 +147,13 @@ function reducer(state, action) {
 
       return {
         ...state,
-        xPositionOffSet: newXPositionOffSet,
+        xPositionOffset: newXPositionOffset,
       };
     }
-    case "yPositionOffSet/set": {
+    case "yPositionOffset/set": {
       if (isNaN(Number(action.payload))) return state;
 
-      const newYPositionOffSet =
+      const newYPositionOffset =
         Number(action.payload) > 50
           ? 50
           : Number(action.payload) < -50
@@ -128,7 +162,7 @@ function reducer(state, action) {
 
       return {
         ...state,
-        yPositionOffSet: newYPositionOffSet,
+        yPositionOffset: newYPositionOffset,
       };
     }
     case "gameSpeed/set": {
@@ -263,8 +297,8 @@ function ConwayEngineProvider({ children }) {
       alivePixels,
       gameSpeedMultiplier,
       queryString,
-      xPositionOffSet,
-      yPositionOffSet,
+      xPositionOffset,
+      yPositionOffset,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -275,6 +309,9 @@ function ConwayEngineProvider({ children }) {
     function () {
       const widthParams = searchParams.getAll("width");
       const heightParams = searchParams.getAll("height");
+      const yOffsetParams = searchParams.getAll("yoffset");
+      const xOffsetParams = searchParams.getAll("xoffset");
+      const gameSpeedMultiplierParams = searchParams.getAll("gamespdmult");
       const xPositionParams =
         searchParams.getAll("xPosition").length === 0
           ? searchParams.getAll("x")
@@ -291,6 +328,9 @@ function ConwayEngineProvider({ children }) {
           height: heightParams,
           xPosition: xPositionParams,
           yPosition: yPositionParams,
+          yOffset: yOffsetParams,
+          xOffset: xOffsetParams,
+          gameSpeedMultiplier: gameSpeedMultiplierParams,
         },
       });
     },
@@ -308,8 +348,8 @@ function ConwayEngineProvider({ children }) {
         gameSpeed,
         gameSpeedMultiplier,
         queryString,
-        xPositionOffSet,
-        yPositionOffSet,
+        xPositionOffset,
+        yPositionOffset,
 
         dispatch,
       }}

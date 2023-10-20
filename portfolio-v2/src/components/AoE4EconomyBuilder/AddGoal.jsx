@@ -1,8 +1,10 @@
 import { useState } from "react";
 import SelectOptionInput from "../BasicCustomComponents/SelectOptionInput";
+import { useEconomyBuilder } from "../../contexts/EconomyBuilderContext";
 
-function AddGoal({ dispatch, state }) {
+function AddGoal() {
   const [isActive, setIsActive] = useState(false);
+  const { state, dispatch } = useEconomyBuilder();
 
   return (
     <div>
@@ -11,9 +13,7 @@ function AddGoal({ dispatch, state }) {
       </button>
       {isActive ? (
         <form
-          onSubmit={(event) =>
-            dispatch({ type: "goalAccepted", payload: event })
-          }
+          onSubmit={(event) => dispatch({ type: "goal/use", payload: event })}
         >
           <SelectOptionInput
             value={state.goalType}
@@ -29,7 +29,7 @@ function AddGoal({ dispatch, state }) {
             placeholder="production type"
             onChange={(event) =>
               dispatch({
-                type: "setGoalType",
+                type: "goalType/set",
                 payload: event.target.value,
               })
             }
@@ -42,7 +42,7 @@ function AddGoal({ dispatch, state }) {
               placeholder="Goal name"
               onChange={(event) =>
                 dispatch({
-                  type: "setGoalName",
+                  type: "goalName/set",
                   payload: event.target.value,
                 })
               }
@@ -57,7 +57,7 @@ function AddGoal({ dispatch, state }) {
                 placeholder="Food"
                 onChange={(event) =>
                   dispatch({
-                    type: "setGoalFood",
+                    type: "goalFood/set",
                     payload: Number(event.target.value),
                   })
                 }
@@ -67,7 +67,7 @@ function AddGoal({ dispatch, state }) {
                 placeholder="Wood"
                 onChange={(event) =>
                   dispatch({
-                    type: "setGoalWood",
+                    type: "goalWood/set",
                     payload: Number(event.target.value),
                   })
                 }
@@ -77,7 +77,7 @@ function AddGoal({ dispatch, state }) {
                 placeholder="Gold"
                 onChange={(event) =>
                   dispatch({
-                    type: "setGoalGold",
+                    type: "goalGold/set",
                     payload: Number(event.target.value),
                   })
                 }
@@ -87,7 +87,7 @@ function AddGoal({ dispatch, state }) {
                 placeholder="Stone"
                 onChange={(event) =>
                   dispatch({
-                    type: "setGoalStone",
+                    type: "goalStone/set",
                     payload: Number(event.target.value),
                   })
                 }

@@ -5,7 +5,7 @@ const EconomyBuilderContext = createContext();
 
 function reducer(state, action) {
   switch (action.type) {
-    case "setGoalType": {
+    case "goalType/set": {
       const isGoalTypeAlsoName =
         action.payload !== "No goal" &&
         action.payload !== "Other building" &&
@@ -18,32 +18,32 @@ function reducer(state, action) {
         goalName: isGoalTypeAlsoName ? action.payload : null,
       };
     }
-    case "setGoalName":
+    case "goalName/set":
       return {
         ...state,
         goalName: action.payload.length > 0 ? action.payload : null,
       };
-    case "setGoalFood":
+    case "goalFood/set":
       return {
         ...state,
         goalFood: action.payload > 0 ? action.payload : null,
       };
-    case "setGoalWood":
+    case "goalWood/set":
       return {
         ...state,
         goalWood: action.payload > 0 ? action.payload : null,
       };
-    case "setGoalGold":
+    case "goalGold/set":
       return {
         ...state,
         goalGold: action.payload > 0 ? action.payload : null,
       };
-    case "setGoalStone":
+    case "goalStone/set":
       return {
         ...state,
         goalStone: action.payload > 0 ? action.payload : null,
       };
-    case "goalAccepted":
+    case "goal/use":
       action.payload.preventDefault();
 
       if (!state.goalName) return state;
@@ -63,17 +63,17 @@ function reducer(state, action) {
         timer: state.timer + 20,
         curStep: state.curStep + 1,
       };
-    case "switchStep":
+    case "step/switch":
       return {
         ...state.savedSteps[action.payload.target.value - 1],
         savedSteps: state.savedSteps,
       };
-    case "saveStep":
+    case "step/save":
       return {
         ...state,
         savedSteps: [...state.savedSteps, { ...state, savedSteps: [] }],
       };
-    case "clearSteps":
+    case "steps/clear":
       return initialState;
     default:
       throw new Error("Unknown reducer command");

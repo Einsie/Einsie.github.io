@@ -5,8 +5,8 @@ function GameSettings() {
     widthQuantity,
     heightQuantity,
     gameSpeedMultiplier,
-    xPositionOffSet,
-    yPositionOffSet,
+    xPositionOffset,
+    yPositionOffset,
     dispatch,
   } = useConwayEngine();
 
@@ -63,22 +63,22 @@ function GameSettings() {
         +
       </button>
       <p>The range for x- and y-position offset is from -50 to 50</p>
-      <span>x-position offset: </span>
+      <span>y-position offset: </span>
       <button
         onClick={() =>
           dispatch({
-            type: "xPositionOffSet/set",
-            payload: xPositionOffSet - 1,
+            type: "yPositionOffset/set",
+            payload: yPositionOffset - 1,
           })
         }
       >
         -
       </button>
       <input
-        value={xPositionOffSet}
+        value={yPositionOffset}
         onChange={(event) =>
           dispatch({
-            type: "xPositionOffSet/set",
+            type: "yPositionOffset/set",
             payload: event.target.value,
           })
         }
@@ -86,30 +86,30 @@ function GameSettings() {
       <button
         onClick={() =>
           dispatch({
-            type: "xPositionOffSet/set",
-            payload: xPositionOffSet + 1,
+            type: "yPositionOffset/set",
+            payload: yPositionOffset + 1,
           })
         }
       >
         +
       </button>
       <br />
-      <span>y-position offset: </span>
+      <span>x-position offset: </span>
       <button
         onClick={() =>
           dispatch({
-            type: "yPositionOffSet/set",
-            payload: yPositionOffSet - 1,
+            type: "xPositionOffset/set",
+            payload: xPositionOffset - 1,
           })
         }
       >
         -
       </button>
       <input
-        value={yPositionOffSet}
+        value={xPositionOffset}
         onChange={(event) =>
           dispatch({
-            type: "yPositionOffSet/set",
+            type: "xPositionOffset/set",
             payload: event.target.value,
           })
         }
@@ -117,8 +117,8 @@ function GameSettings() {
       <button
         onClick={() =>
           dispatch({
-            type: "yPositionOffSet/set",
-            payload: yPositionOffSet + 1,
+            type: "xPositionOffset/set",
+            payload: xPositionOffset + 1,
           })
         }
       >

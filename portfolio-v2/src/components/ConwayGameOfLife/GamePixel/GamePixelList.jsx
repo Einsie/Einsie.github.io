@@ -5,8 +5,8 @@ function GamePixelList() {
   const {
     widthQuantity,
     heightQuantity,
-    xPositionOffSet,
-    yPositionOffSet,
+    xPositionOffset,
+    yPositionOffset,
     alivePixels,
   } = useConwayEngine();
 
@@ -16,14 +16,14 @@ function GamePixelList() {
   ).map((pixel, index) => {
     return (
       <GamePixel
-        xPosition={(index % widthQuantity) + 1 + xPositionOffSet}
-        yPosition={Math.floor(index / widthQuantity) + 1 - yPositionOffSet}
+        xPosition={(index % widthQuantity) + 1 + xPositionOffset}
+        yPosition={Math.floor(index / widthQuantity) + 1 - yPositionOffset}
         isAlive={alivePixels.some(
           (anAlivePixel) =>
             anAlivePixel.xPosition ===
-              (index % widthQuantity) + 1 + xPositionOffSet &&
+              (index % widthQuantity) + 1 + xPositionOffset &&
             anAlivePixel.yPosition ===
-              Math.floor(index / widthQuantity) + 1 - yPositionOffSet
+              Math.floor(index / widthQuantity) + 1 - yPositionOffset
         )}
         key={index}
       />
